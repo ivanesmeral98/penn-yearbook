@@ -3,6 +3,8 @@ import db from '../../utils/firestore-backend'
 export default function sendNote(req, res) {
     if (req.method === 'POST') {
         const {
+            fromFirstName,
+            fromLastName,
             fromEmail,
             toEmail,
             toGroup,
@@ -11,6 +13,7 @@ export default function sendNote(req, res) {
             photo,
         } = req.body
         const note = {
+            fromName: `${fromFirstName} ${fromLastName}`,
             fromEmail,
             toEmail,
             toGroup,
