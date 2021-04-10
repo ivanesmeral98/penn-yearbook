@@ -1,6 +1,24 @@
 {
-    "extends": ["airbnb", "prettier"],
-    "plugins": ["prettier"],
+    "env": {
+        "es6": true,
+        "node": true,
+        "browser": true,
+        "amd": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "extends": ["airbnb-base", "plugin:react/recommended", "prettier"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "plugins": ["simple-import-sort", "prettier", "react"],
     "rules": {
         "prettier/prettier": ["error"],
         "react/react-in-jsx-scope": "off",
