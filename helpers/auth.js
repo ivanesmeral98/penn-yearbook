@@ -16,7 +16,7 @@ export function login(user) {
 export function sendVerification(email, callback) {
     const actionCodeSettings = {
         // Redirects to verify page
-        url: 'http://localhost:3000',
+        url: process.env.NEXT_PUBLIC_DOMAIN,
         handleCodeInApp: true,
     }
     auth.sendSignInLinkToEmail(email, actionCodeSettings)

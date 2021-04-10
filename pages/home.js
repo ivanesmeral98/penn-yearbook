@@ -65,7 +65,9 @@ export const getServerSideProps = withIronSession(
             res.end()
         }
 
-        const resp = await fetch('http://localhost:3000/api/getusers')
+        const resp = await fetch(
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/getusers`,
+        )
         const users = resp.status === 200 ? await resp.json() : []
         return {
             props: { user, users },
