@@ -1,4 +1,4 @@
-import { auth } from '../utils/firestore-client'
+import { auth } from '../utils/firestore'
 
 export function login(email) {
     console.log(email)
