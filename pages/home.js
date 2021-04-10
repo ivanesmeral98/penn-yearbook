@@ -1,12 +1,40 @@
 import { withIronSession } from 'next-iron-session'
+import { useState } from 'react'
+import Student from '../components/student'
 
-export default function Home({ user }) {
-    if (!user) window.location.redirect('/')
+export default function Home({ user, users }) {
+    const [section, setSection] = useState('students')
 
     return (
-        <div>
-            <h1>Hello {user.email}</h1>
-            <p>Secret things live here...</p>
+        <div className="home">
+            <div className="header-container">
+                <p className="header">Hey, {user.firstName}</p>
+                <div className="header-links">
+                    <p
+                        className={section === 'students' && 'active'}
+                        onClick={() => setSection('students')}
+                    >
+                        Students
+                    </p>
+                    <p
+                        className={section === 'groups' && 'active'}
+                        onClick={() => setSection('groups')}
+                    >
+                        Groups
+                    </p>
+                    <p
+                        className={section === 'notes' && 'active'}
+                        onClick={() => setSection('notes')}
+                    >
+                        Notes
+                    </p>
+                </div>
+            </div>
+            <div className="user-grid">
+                {users.map((u) => (
+                    <Student key={u.email} user={user} />
+                ))}
+            </div>
         </div>
     )
 }
@@ -21,8 +49,11 @@ export const getServerSideProps = withIronSession(
             res.end()
         }
 
+        const resp = await fetch('http://localhost:3000/api/getusers')
+        const users = resp.status === 200 ? await resp.json() : []
+
         return {
-            props: { user },
+            props: { user, users },
         }
     },
     {

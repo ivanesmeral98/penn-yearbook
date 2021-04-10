@@ -1,0 +1,16 @@
+.student {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+
+    .image {
+        height: 200px;
+        width: 133px;
+        object-fit: contain;
+    }
+
+    .bold {
+        font-weight: 600;
+    }
+}

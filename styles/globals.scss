@@ -1,6 +1,8 @@
 @import './colors.scss';
 @import './index.scss';
 @import './signup.scss';
+@import './home.scss';
+@import './student.scss';
 
 html,
 body {
@@ -63,4 +65,5 @@ a {
     font-size: 42px;
     font-weight: 500;
     font-family: 'Frank Ruhl Libre', serif;
+    margin-bottom: 15px;
 }
