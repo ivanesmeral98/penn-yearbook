@@ -4,11 +4,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { useState } from 'react'
-import {
-    useQuery,
-    useMutation,
-    useQueryClient
-} from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 const evaApi = {
     a: 1,
@@ -17,19 +13,15 @@ const evaApi = {
 }
 const key = process.env.PRIVATE_KEY
 
-
 const Test = () => {
     // Access the client
-   const queryClient = useQueryClient()
-   console.log(key)
+    const queryClient = useQueryClient()
+    console.log(key)
 
     return (
         <div>
-            <h1>
-                yerr
-            </h1>
+            <h1>yerr</h1>
         </div>
-        
     )
 }
 

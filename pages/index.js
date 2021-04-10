@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home({ data }) {
+    console.log('props', data)
+
     return (
         <div className={styles.container}>
             <Head>
@@ -76,4 +78,10 @@ export default function Home() {
             </footer>
         </div>
     )
+}
+
+export async function getServerSideProps() {
+    const hello = await fetch('http://localhost:3000/api/hello')
+    const data = await hello.json()
+    return { props: { data } }
 }
