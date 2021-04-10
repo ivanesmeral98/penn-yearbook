@@ -33,6 +33,7 @@
         .header-links {
             display: flex;
             margin-right: 4rem;
+            align-items: baseline;
 
             @media (max-width: $mobile) {
                 margin-right: 1rem;
@@ -40,10 +41,11 @@
             }
 
             p {
-                margin: 0 10px;
+                margin: 0 5px;
                 padding: 10px;
                 cursor: pointer;
                 text-transform: capitalize;
+                transition: all 0.5s ease;
 
                 @media (max-width: $mobile) {
                     margin: 0 7px 0 0;
@@ -52,8 +54,13 @@
                 }
 
                 &.active {
-                    background-color: $yb-light-blue;
-                    border-radius: 3px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    transition: all 0.5s ease;
+
+                    @media (max-width: $mobile) {
+                        font-size: 18px;
+                    }
                 }
             }
         }
@@ -72,6 +79,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            transition: all 0.5s ease;
 
             @media (max-width: $mobile) {
                 position: fixed;
@@ -101,6 +109,7 @@
                 text-align: center;
                 margin-right: 10px;
                 font-size: 14px;
+                transition: all 0.5s ease;
 
                 @media (max-width: $mobile) {
                     font-size: 12px;
@@ -111,6 +120,11 @@
                 &.active {
                     background-color: $yb-light-blue;
                     border-radius: 20px;
+                    transition: all 0.5s ease;
+                    font-size: 16px;
+                    font-weight: bold;
+                    height: 25px;
+                    width: 25px;
                 }
             }
         }
@@ -123,6 +137,11 @@
             justify-content: space-between;
             align-items: flex-start;
 
+            @media (max-width: $mobile) {
+                flex-direction: column;
+                margin: 0;
+            }
+
             .tags {
                 flex-direction: column-reverse;
                 align-items: flex-start;
@@ -134,11 +153,16 @@
                     font-size: 14px;
                 }
             }
-        }
 
-        button {
-            img {
-                margin-right: 10px;
+            button {
+                img {
+                    margin-right: 10px;
+                }
+
+                @media (max-width: $mobile) {
+                    font-size: 14px;
+                    margin: 10px 0;
+                }
             }
         }
     }
