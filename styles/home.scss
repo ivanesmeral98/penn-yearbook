@@ -1,13 +1,15 @@
 .home {
+    max-height: calc(100vh - 2rem);
     min-height: calc(100vh - 2rem);
     width: calc(100vw - 2rem);
     background-color: $yb-white;
-    padding: 3rem 4rem;
+    padding: 1.5rem 3rem;
     margin: 1rem;
     border: 6px solid transparentize($yb-light-blue, 0.4);
+    overflow: scroll;
 
     @media (max-width: $mobile) {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
     }
 
     .header-container {
@@ -19,15 +21,18 @@
             flex-direction: column;
         }
 
-        @media (max-width: $mobile) {
-            .header {
+        .header {
+            margin: 0;
+
+            @media (max-width: $mobile) {
                 font-size: 30px;
+                margin-bottom: 10px;
             }
         }
 
         .header-links {
             display: flex;
-            margin-right: 2rem;
+            margin-right: 4rem;
 
             @media (max-width: $mobile) {
                 margin-right: 1rem;
@@ -54,45 +59,56 @@
         }
     }
 
-    .user-grid {
+    .grid-container {
         display: flex;
-        flex-wrap: wrap;
-    }
+        justify-content: space-between;
 
-    .filters {
-        position: absolute;
-        right: 3rem;
-        bottom: 3rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-
-        @media (max-width: $mobile) {
-            right: 3rem;
-            bottom: 2rem;
+        .user-grid {
+            display: flex;
+            flex-wrap: wrap;
         }
 
-        .help {
-            text-align: right;
-            color: #aaa !important;
-            margin-top: 10px;
+        .filters {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
 
             @media (max-width: $mobile) {
-                width: 60px;
+                position: fixed;
+                top: 80px;
+                right: 50px;
             }
-        }
 
-        .filter {
-            padding: 0px 5px;
-            width: 23px;
-            height: 23px;
-            cursor: pointer;
-            text-align: center;
-            margin-right: 10px;
+            .help {
+                text-align: right;
+                color: #aaa !important;
+                margin-top: 5px;
 
-            &.active {
-                background-color: $yb-light-blue;
-                border-radius: 20px;
+                @media (max-width: $mobile) {
+                    font-size: 10px;
+                    max-width: 80px;
+                }
+            }
+
+            .filter {
+                padding: 0px 5px;
+                width: 23px;
+                height: 23px;
+                cursor: pointer;
+                text-align: center;
+                margin-right: 10px;
+                font-size: 14px;
+
+                @media (max-width: $mobile) {
+                    font-size: 12px;
+                    width: 20px;
+                    height: 20px;
+                }
+
+                &.active {
+                    background-color: $yb-light-blue;
+                    border-radius: 20px;
+                }
             }
         }
     }

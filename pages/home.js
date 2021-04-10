@@ -27,7 +27,7 @@ export default function Home({ user, users }) {
                     ))}
                 </div>
             </div>
-            <div className="is-flex">
+            <div className="grid-container">
                 {section === 'students' && (
                     <>
                         <div className="user-grid">
