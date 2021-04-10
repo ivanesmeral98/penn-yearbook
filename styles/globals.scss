@@ -1,27 +1,66 @@
 @import './colors.scss';
 @import './index.scss';
+@import './signup.scss';
 
 html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
     color: inherit;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 * {
     box-sizing: border-box;
-    color: black;
+    color: black !important;
+    font-family: 'Archivo', serif;
 }
 
-.card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 30px 20px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+.text {
+    font-size: 18px;
+}
+
+.button {
+    margin: 0px 10px;
+    outline-color: black;
+    border-color: black;
+    background-color: transparent;
+    color: black;
+
+    &:hover {
+        border-color: black;
+        color: black;
+    }
+}
+
+.input {
+    width: 250px;
+    border-color: black;
+    background-color: transparent;
+
+    &:hover {
+        border-color: black;
+    }
+}
+
+.blue-background {
+    background: $yb-light-blue;
+    width: 100%;
+}
+
+.title {
+    color: black;
+    font-size: 60px;
+    font-weight: 600;
+    font-family: 'Frank Ruhl Libre', serif;
+}
+
+.header {
+    color: black;
+    font-size: 42px;
+    font-weight: 500;
+    font-family: 'Frank Ruhl Libre', serif;
 }

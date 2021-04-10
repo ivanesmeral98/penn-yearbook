@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-const majors = [
+export const majors = [
     'Africana Studies',
     'Ancient History',
     'Anthropology',
@@ -88,7 +87,7 @@ const majors = [
     'Statistics',
 ]
 
-const minors = [
+export const minors = [
     'Archaeological Science',
     'Law and Society',
     'Medical Sociology',
@@ -181,9 +180,14 @@ const minors = [
     'Statistics',
 ]
 
-const schools = [
+export const schools = [
     'College of Arts and Sciences',
     'School of Engineering and Applied Science',
     'The Wharton School',
     'Nursing',
+    'Management & Technology',
+    'Huntsman',
+    'Life Sciences and Management',
+    'Nursing and Health Care Management',
+    'Vajelos Integrated Program in Energy Research',
 ]

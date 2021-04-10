@@ -1,0 +1,76 @@
+.signup {
+    height: 100vh;
+    width: 100vw;
+    background-color: $yb-white;
+    padding: 2rem 3rem;
+
+    .header {
+        margin-bottom: 3rem;
+    }
+
+    .loading: {
+        padding: 2rem;
+    }
+
+    .button {
+        margin: 0px;
+    }
+
+    .submit {
+        position: absolute;
+        right: 5rem;
+        bottom: 5rem;
+        background-color: black;
+        color: white !important;
+    }
+
+    .form {
+        padding: 0 3rem;
+
+        .field {
+            margin: 20px 0 !important;
+
+            .label {
+                color: black !important;
+                font-family: 'Archivo', sans-serif;
+            }
+
+            .input {
+                margin-right: 30px;
+
+                &.long {
+                    width: 530px;
+                }
+            }
+
+            .image {
+                width: 200px;
+                height: 300px;
+                object-fit: cover;
+                border: 1px solid black;
+                border-radius: 6px;
+                margin-top: 40px;
+            }
+
+            .option {
+                margin: 5px 10px;
+                padding: 5px 10px;
+                width: 400px;
+
+                &:hover {
+                    background-color: #ddd;
+                    cursor: pointer;
+                }
+            }
+
+            .tags {
+                display: flex;
+                margin: 10px 0px;
+
+                .tag {
+                    background-color: $yb-light-blue;
+                }
+            }
+        }
+    }
+}

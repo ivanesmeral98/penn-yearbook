@@ -7,7 +7,7 @@ export default function userexists(req, res) {
         const users = db.collection('users').doc(email)
         users.get().then((doc) => {
             if (doc.exists) {
-                res.send(doc.data())
+                res.send({ user: doc.data() })
             } else {
                 res.send({})
             }

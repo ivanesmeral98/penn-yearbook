@@ -14,8 +14,13 @@ export default function Index() {
         // Check if account has been created, if so complete auth, if not go to signup
         fetch(`/api/userexists?email=${authUser.email}`)
             .then((resp) => resp.json())
-            .then((user) => {
+            .then(({ user }) => {
+                console.log(user)
                 if (user) window.location.assign('/home')
+                else {
+                    localStorage.setItem('verifiedEmail', authUser.email)
+                    window.location.assign('/signup')
+                }
             })
             .catch((err) => console.log('Error in fetch', err))
     }
@@ -33,7 +38,7 @@ export default function Index() {
 
     return (
         <div className="index">
-            <div className="background">
+            <div className="blue-background">
                 <p className="title">Class of 2021 Digital Yearbook</p>
                 {status === 'ready' ? (
                     <div className="is-flex">
