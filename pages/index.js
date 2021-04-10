@@ -36,32 +36,46 @@ export default function Index() {
         else setStatus('ready')
     }, [])
 
+    function enter() {
+        if (email && email.endsWith('upenn.edu'))
+            sendVerification(email, setStatus)
+        else setStatus('notPenn')
+    }
+
     return (
         <div className="index">
             <div className="blue-background">
                 <p className="title">Class of 2021 Digital Yearbook</p>
-                {status === 'ready' ? (
-                    <div className="is-flex">
-                        <div className="field">
-                            <p className="control has-icons-left">
-                                <input
-                                    className="input"
-                                    type="email"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <span className="icon is-small is-left">
-                                    <img src="/mail.svg" />
-                                </span>
+                {status === 'ready' || status === 'notPenn' ? (
+                    <>
+                        {status === 'notPenn' && (
+                            <p className="text">
+                                Please use a valid Penn email address.
                             </p>
-                            <p className="help">Sign in with your Penn email</p>
+                        )}
+                        <div className="is-flex">
+                            <div className="field">
+                                <p className="control has-icons-left">
+                                    <input
+                                        className="input"
+                                        type="email"
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
+                                    />
+                                    <span className="icon is-small is-left">
+                                        <img src="/mail.svg" />
+                                    </span>
+                                </p>
+                                <p className="help">
+                                    Sign in with your Penn email
+                                </p>
+                            </div>
+                            <button className="button" onClick={enter}>
+                                Enter
+                            </button>
                         </div>
-                        <button
-                            className="button"
-                            onClick={() => sendVerification(email, setStatus)}
-                        >
-                            Enter
-                        </button>
-                    </div>
+                    </>
                 ) : (
                     <div className="text">
                         {status === 'loading' && 'Loading...'}
