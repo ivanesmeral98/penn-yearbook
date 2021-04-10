@@ -1,6 +1,6 @@
 import { auth } from '../utils/firestore'
 
-export function login(email, callback) {
+export function sendVerification(email, callback) {
     const actionCodeSettings = {
         // Redirects to verify page
         url: 'http://localhost:3000',
@@ -32,4 +32,17 @@ export function completeSignIn(email, callback) {
                 callback()
             })
     } else callback()
+}
+
+export function login(user) {
+    fetch('/api/sessions', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify({ user }),
+    }).then((resp) => {
+        if (resp.status === 200) window.location.assign('/home')
+        else console.log('Error creating session', resp.status)
+    })
 }

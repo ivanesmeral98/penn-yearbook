@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { withIronSession } from 'next-iron-session'
 import FileUpload from '../components/fileUpload'
 import { schools, majors, minors } from '../helpers/constants'
+import { login } from '../helpers/auth'
 
 export default function Signup() {
     const [email, setEmail] = useState()
@@ -56,7 +58,7 @@ export default function Signup() {
         })
             .then((resp) => resp.json())
             .then(({ user }) => {
-                console.log('created user', user)
+                login(user)
             })
             .catch((err) => {
                 console.log('Error creating user', err)
@@ -306,3 +308,26 @@ export default function Signup() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSession(
+    async ({ req, res }) => {
+        const user = req.session.get('user')
+
+        if (user) {
+            res.setHeader('location', '/home')
+            res.statusCode = 302
+            res.end()
+        }
+
+        return {
+            props: {},
+        }
+    },
+    {
+        cookieName: 'MYSITECOOKIE',
+        cookieOptions: {
+            secure: process.env.NODE_ENV === 'production',
+        },
+        password: process.env.APPLICATION_SECRET,
+    },
+)

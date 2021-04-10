@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { login, completeSignIn } from '../helpers/auth'
+import { withIronSession } from 'next-iron-session'
+import { sendVerification, completeSignIn, login } from '../helpers/auth'
 
 export default function Index() {
     const [email, setEmail] = useState()
@@ -15,8 +16,7 @@ export default function Index() {
         fetch(`/api/userexists?email=${authUser.email}`)
             .then((resp) => resp.json())
             .then(({ user }) => {
-                console.log(user)
-                if (user) window.location.assign('/home')
+                if (user) login(user)
                 else {
                     localStorage.setItem('verifiedEmail', authUser.email)
                     window.location.assign('/signup')
@@ -57,7 +57,7 @@ export default function Index() {
                         </div>
                         <button
                             className="button"
-                            onClick={() => login(email, setStatus)}
+                            onClick={() => sendVerification(email, setStatus)}
                         >
                             Enter
                         </button>
@@ -81,3 +81,26 @@ export default function Index() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSession(
+    async ({ req, res }) => {
+        const user = req.session.get('user')
+
+        if (user) {
+            res.setHeader('location', '/home')
+            res.statusCode = 302
+            res.end()
+        }
+
+        return {
+            props: {},
+        }
+    },
+    {
+        cookieName: 'MYSITECOOKIE',
+        cookieOptions: {
+            secure: process.env.NODE_ENV === 'production',
+        },
+        password: process.env.APPLICATION_SECRET,
+    },
+)

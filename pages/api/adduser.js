@@ -8,13 +8,11 @@ export default function adduser(req, res) {
             .doc(user.email)
             .set(user)
             .then(() => {
-                console.log('Created user successfully')
                 res.status(200).send({ user })
             })
             .catch((err) => {
-                console.log(err)
                 res.status(403).send({
-                    err: 'Error putting user in DB',
+                    err: `Error putting user in DB${err}`,
                 })
             })
     } else {
