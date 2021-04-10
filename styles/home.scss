@@ -59,7 +59,7 @@
         }
     }
 
-    .grid-container {
+    .students-container {
         display: flex;
         justify-content: space-between;
 
@@ -112,6 +112,33 @@
                     background-color: $yb-light-blue;
                     border-radius: 20px;
                 }
+            }
+        }
+    }
+
+    .notes-container {
+        .notes-admin {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            .tags {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                margin-bottom: 0;
+
+                .tag {
+                    display: flex;
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        button {
+            img {
+                margin-right: 10px;
             }
         }
     }

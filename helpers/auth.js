@@ -15,9 +15,7 @@ export function login(user) {
 }
 
 function setCookie(name, value) {
-    console.log(Cookies)
     Cookies.set(name, value)
-    console.log(Cookies.get())
 }
 
 export function sendVerification(email, callback) {
@@ -57,7 +55,6 @@ export function completeSignIn(email) {
                                 result.user.email,
                             )
                             Cookies.set('verifiedEmail', result.user.email)
-                            console.log(Cookies.get())
                             window.location.assign('/signup')
                         }
                     })

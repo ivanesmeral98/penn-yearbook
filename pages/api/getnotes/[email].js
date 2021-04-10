@@ -15,7 +15,7 @@ export default function getNotesPerUser(req, res) {
                 snapshot.forEach((doc) => {
                     vals.push({ ...doc.data(), id: doc.id })
                 })
-                res.send({ notes: vals })
+                res.send(vals)
             })
             .catch((err) => {
                 console.error(err)

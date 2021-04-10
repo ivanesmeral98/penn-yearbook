@@ -10,16 +10,14 @@ export default function sendNote(req, res) {
             toGroup,
             message,
             accepted,
-            photo,
         } = req.body
         const note = {
             fromName: `${fromFirstName} ${fromLastName}`,
             fromEmail,
-            toEmail,
-            toGroup,
+            toEmail: toEmail || '',
+            toGroup: toGroup || '',
             message,
             accepted,
-            photo,
         }
         db.collection('notes')
             .add(note)

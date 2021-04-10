@@ -1,23 +1,14 @@
 .student-modal {
-    .modal-background {
-        background-color: rgba(220, 220, 220, 0.6);
-    }
-
     .modal-content {
-        background-color: $yb-white;
         max-width: 1000px;
         width: 80%;
         height: auto;
         max-height: 80%;
         border-radius: 8px;
         display: flex;
-        padding: 2rem;
 
         @media (max-width: $mobile) {
             flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-            max-height: 100vh;
         }
 
         .header {
@@ -65,18 +56,6 @@
                 max-width: 100vw;
                 margin-top: 30px;
                 margin-bottom: 15px;
-            }
-        }
-
-        .close {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            cursor: pointer;
-
-            @media (max-width: $mobile) {
-                top: 20px;
-                right: 20px;
             }
         }
 

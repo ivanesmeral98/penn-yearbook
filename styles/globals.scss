@@ -6,6 +6,7 @@ $mobile: 500px;
 @import './home.scss';
 @import './student.scss';
 @import './studentModal.scss';
+@import './writeNote.scss';
 
 html,
 body {
@@ -39,6 +40,12 @@ a {
         border-color: black;
         color: black;
     }
+
+    &.submit {
+        background-color: black;
+        border: none;
+        color: white !important;
+    }
 }
 
 .tags {
@@ -50,13 +57,40 @@ a {
     }
 }
 
-.input {
+.link {
+    border: none;
+    margin: 0px;
+    text-decoration: underline;
+    outline: none;
+
+    @media (max-width: $mobile) {
+        font-size: 12px;
+    }
+
+    &:focus {
+        outline: none !important;
+    }
+}
+
+.input,
+.textarea {
     width: 250px;
-    border-color: black;
+    border-color: black !important;
     background-color: transparent;
 
     &:hover {
         border-color: black;
+    }
+}
+
+.option {
+    margin: 5px 10px;
+    padding: 5px 10px;
+    width: 400px;
+
+    &:hover {
+        background-color: #ddd;
+        cursor: pointer;
     }
 }
 
@@ -78,4 +112,32 @@ a {
     font-weight: 500;
     font-family: 'Frank Ruhl Libre', serif;
     margin-bottom: 15px;
+}
+
+.modal-background {
+    background-color: rgba(220, 220, 220, 0.6);
+}
+
+.modal-content {
+    background-color: $yb-white;
+    border-radius: 8px;
+    padding: 2rem;
+
+    @media (max-width: $mobile) {
+        height: 100vh !important;
+        width: 100vw !important;
+        max-height: 100vh !important;
+    }
+
+    .close {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        cursor: pointer;
+
+        @media (max-width: $mobile) {
+            top: 20px;
+            right: 20px;
+        }
+    }
 }
