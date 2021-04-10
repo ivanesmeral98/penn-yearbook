@@ -37,6 +37,8 @@ export default function Signup() {
             setError('required')
             return
         }
+        console.log(quote.chatAt(0), quote.chatAt(0) === '"')
+        return
         await fetch(`/api/adduser`, {
             method: 'POST',
             headers: {
@@ -313,7 +315,7 @@ export const getServerSideProps = withIronSession(
         const user = req.session.get('user')
 
         if (user) {
-            res.setHeader('location', '/home')
+            // res.setHeader('location', '/home')
             res.statusCode = 302
             res.end()
         }
