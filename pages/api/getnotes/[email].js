@@ -18,7 +18,7 @@ export default function getNotesPerUser(req, res) {
                 res.send({ notes: vals })
             })
             .catch((err) => {
-                console.log(err)
+                console.error(err)
                 res.status(500).send({ ERR: err })
             })
     }
