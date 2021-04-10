@@ -23,6 +23,7 @@ export default function HeadComponent() {
                 href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,600&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap"
                 rel="stylesheet"
             />
+            <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         </Head>
     )
 }

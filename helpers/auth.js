@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import { auth } from '../utils/firestore'
 
 export function login(user) {
@@ -13,6 +14,12 @@ export function login(user) {
     })
 }
 
+function setCookie(name, value) {
+    console.log(Cookies)
+    Cookies.set(name, value)
+    console.log(Cookies.get())
+}
+
 export function sendVerification(email, callback) {
     const actionCodeSettings = {
         // Redirects to verify page
@@ -23,6 +30,7 @@ export function sendVerification(email, callback) {
         .then(() => {
             // The link was successfully sent. Inform the user. Save the email locally
             localStorage.setItem('emailForSignIn', email)
+            setCookie('emailForSignIn', email)
             callback('emailSent')
         })
         .catch((error) => {
@@ -38,6 +46,7 @@ export function completeSignIn(email) {
             .then((result) => {
                 // Clear email from storage.
                 window.localStorage.removeItem('emailForSignIn')
+                Cookies.remove('emailForSignIn')
                 fetch(`/api/userexists?email=${result.user.email}`)
                     .then((resp) => resp.json())
                     .then(({ user }) => {
@@ -47,6 +56,8 @@ export function completeSignIn(email) {
                                 'verifiedEmail',
                                 result.user.email,
                             )
+                            Cookies.set('verifiedEmail', result.user.email)
+                            console.log(Cookies.get())
                             window.location.assign('/signup')
                         }
                     })

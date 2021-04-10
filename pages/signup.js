@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { withIronSession } from 'next-iron-session'
+import Cookies from 'js-cookie'
 import FileUpload from '../components/fileUpload'
 import { schools, majors, minors } from '../helpers/constants'
 import { login } from '../helpers/auth'
@@ -19,11 +20,17 @@ export default function Signup() {
     const [error, setError] = useState()
 
     useEffect(() => {
-        const verifiedEmail = localStorage.getItem('verifiedEmail')
+        let verifiedEmail = localStorage.getItem('verifiedEmail')
+        // check for mobile cookie
+        if (!verifiedEmail) {
+            verifiedEmail = Cookies.get('verifiedEmail')
+        }
+        // neither on desktop nor mobile
         if (!verifiedEmail) window.location.assign('/')
         else {
             setEmail(verifiedEmail)
             localStorage.removeItem('verifiedEmail')
+            Cookies.remove('verifiedEmail')
         }
     }, [])
 

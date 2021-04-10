@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { withIronSession } from 'next-iron-session'
+import Cookies from 'js-cookie'
 import { sendVerification, completeSignIn } from '../helpers/auth'
 
 export default function Index() {
@@ -7,7 +8,11 @@ export default function Index() {
     const [status, setStatus] = useState('loading')
 
     useEffect(() => {
-        const signInEmail = localStorage.getItem('emailForSignIn')
+        let signInEmail = localStorage.getItem('emailForSignIn')
+        // Checking for cookie in mobile scenario
+        if (!signInEmail) {
+            signInEmail = Cookies.get('emailForSignIn')
+        }
         /*
          If there is an email stored and the url has verification parameters, trigger the firebase auth function with signin as a callback.  If the url has verification parameters but no email is stored, link has already been used. Otherwise, this is a new login
          */
