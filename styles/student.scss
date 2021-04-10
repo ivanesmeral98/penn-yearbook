@@ -3,11 +3,31 @@
     flex-direction: column;
     align-items: center;
     margin: 20px;
+    cursor: pointer;
+
+    &.big {
+        display: flex;
+        flex-direction: row;
+        .image {
+            height: 600px;
+            width: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .bold {
+            font-weight: 600;
+            font-size: 24px;
+        }
+    }
 
     .image {
         height: 200px;
         width: 133px;
-        object-fit: contain;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 10px;
     }
 
     .bold {

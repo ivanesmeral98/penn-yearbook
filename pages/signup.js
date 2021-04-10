@@ -60,7 +60,7 @@ export default function Signup() {
                 login(user)
             })
             .catch((err) => {
-                console.log('Error creating user', err)
+                console.error('Error creating user', err)
                 setError('user')
             })
     }
@@ -277,7 +277,6 @@ export default function Signup() {
                                                     className="option"
                                                     onClick={() => {
                                                         setMinorSearch('')
-                                                        console.log(n)
                                                         if (
                                                             selectedMinors.includes(
                                                                 n,

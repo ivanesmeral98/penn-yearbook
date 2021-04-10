@@ -7,7 +7,6 @@ export default function getusers(req, res) {
             .get()
             .then((result) => {
                 const data = result.docs.map((doc) => doc.data())
-                console.log(data)
                 res.status(200).send(data)
             })
             .catch((error) => {

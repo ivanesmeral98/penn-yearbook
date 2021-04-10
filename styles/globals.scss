@@ -3,6 +3,7 @@
 @import './signup.scss';
 @import './home.scss';
 @import './student.scss';
+@import './studentModal.scss';
 
 html,
 body {
@@ -35,6 +36,15 @@ a {
     &:hover {
         border-color: black;
         color: black;
+    }
+}
+
+.tags {
+    display: flex;
+    margin: 10px 0px;
+
+    .tag {
+        background-color: $yb-light-blue;
     }
 }
 
