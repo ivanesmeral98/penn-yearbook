@@ -26,27 +26,30 @@ export default function Home({ user, users }) {
                 </div>
             </div>
             <div className="is-flex">
-                <div className="user-grid">
-                    {users.map((u) =>
-                        filter &&
-                        u.firstName.charAt(0).toLowerCase() <
-                            filter.toLowerCase() ? null : (
-                            <Student key={u.email} user={user} />
-                        ),
-                    )}
-                </div>
-                <div className="filters">
-                    {section === 'students' &&
-                        alphaFilters.map((a) => (
-                            <p
-                                className={filter === a && 'active'}
-                                onClick={() => setFilter(a)}
-                                key={a}
-                            >
-                                {a}
-                            </p>
-                        ))}
-                </div>
+                {section === 'students' && (
+                    <>
+                        <div className="user-grid">
+                            {users.map((u) =>
+                                filter &&
+                                u.lastName.charAt(0).toLowerCase() <
+                                    filter.toLowerCase() ? null : (
+                                    <Student key={u.email} user={u} />
+                                ),
+                            )}
+                        </div>
+                        <div className="filters">
+                            {alphaFilters.map((a) => (
+                                <p
+                                    className={filter === a && 'active'}
+                                    onClick={() => setFilter(a)}
+                                    key={a}
+                                >
+                                    {a}
+                                </p>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )
@@ -64,7 +67,6 @@ export const getServerSideProps = withIronSession(
 
         const resp = await fetch('http://localhost:3000/api/getusers')
         const users = resp.status === 200 ? await resp.json() : []
-
         return {
             props: { user, users },
         }

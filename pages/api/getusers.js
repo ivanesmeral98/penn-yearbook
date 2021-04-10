@@ -2,7 +2,7 @@ import db from '../../utils/firestore-backend'
 
 export default function getusers(req, res) {
     if (req.method === 'GET') {
-        const users = db.collection('users').orderBy('firstName', 'desc')
+        const users = db.collection('users').orderBy('lastName', 'asc')
         users
             .get()
             .then((result) => {
