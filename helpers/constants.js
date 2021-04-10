@@ -91,7 +91,6 @@ export const minors = [
     'Archaeological Science',
     'Law and Society',
     'Medical Sociology',
-    'East Central European Studies',
     'Africana Studies',
     'Ancient History',
     'Anthropology',

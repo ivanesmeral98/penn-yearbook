@@ -32,8 +32,7 @@ export default function Signup() {
             !firstName ||
             !lastName ||
             !selectedSchools.length ||
-            !selectedMajors.length ||
-            !selectedMinors.length
+            !selectedMajors.length
         ) {
             setError('required')
             return
@@ -242,7 +241,7 @@ export default function Signup() {
                                         )}
                                 </div>
                                 <div className="field">
-                                    <label className="label">Minor(s)*</label>
+                                    <label className="label">Minor(s)</label>
                                     <input
                                         className="input"
                                         type="text"
@@ -260,37 +259,38 @@ export default function Signup() {
                                     </span>
                                     <div className="tags">
                                         {selectedMinors &&
-                                            selectedMinors.map((m) => (
-                                                <span key={m} className="tag">
-                                                    {m}
+                                            selectedMinors.map((n) => (
+                                                <span className="tag" key={n}>
+                                                    {n}
                                                 </span>
                                             ))}
                                     </div>
                                     {minorSearch &&
-                                        minors.map((mi) =>
-                                            mi
+                                        minors.map((n) =>
+                                            n
                                                 .toLowerCase()
                                                 .indexOf(
                                                     minorSearch.toLowerCase(),
                                                 ) !== -1 ? (
                                                 <p
-                                                    key={mi}
+                                                    key={n}
                                                     className="option"
                                                     onClick={() => {
                                                         setMinorSearch('')
+                                                        console.log(n)
                                                         if (
                                                             selectedMinors.includes(
-                                                                mi,
+                                                                n,
                                                             )
                                                         )
                                                             return
                                                         setSelectedMinors([
-                                                            mi,
+                                                            n,
                                                             ...selectedMinors,
                                                         ])
                                                     }}
                                                 >
-                                                    {mi}
+                                                    {n}
                                                 </p>
                                             ) : null,
                                         )}
