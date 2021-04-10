@@ -5,7 +5,7 @@ import { schools, majors, minors } from '../helpers/constants'
 import { login } from '../helpers/auth'
 
 export default function Signup() {
-    const [email, setEmail] = useState()
+    const [email, setEmail] = useState('y')
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [selectedSchools, setSelectedSchools] = useState([])
@@ -27,6 +27,14 @@ export default function Signup() {
         }
     }, [])
 
+    function removeQuotes(str) {
+        let newStr = str
+        if (newStr.charAt(0) === '"') newStr = newStr.substring(1)
+        if (newStr.charAt(newStr.length - 1) === '"')
+            newStr = newStr.substring(0, newStr.length - 1)
+        return newStr
+    }
+
     async function submit() {
         if (
             !firstName ||
@@ -37,8 +45,7 @@ export default function Signup() {
             setError('required')
             return
         }
-        console.log(quote.chatAt(0), quote.chatAt(0) === '"')
-        return
+
         await fetch(`/api/adduser`, {
             method: 'POST',
             headers: {
@@ -49,7 +56,7 @@ export default function Signup() {
                     email,
                     firstName,
                     lastName,
-                    quote,
+                    quote: removeQuotes(quote),
                     image,
                     schools: selectedSchools,
                     majors: selectedMajors,
@@ -315,7 +322,7 @@ export const getServerSideProps = withIronSession(
         const user = req.session.get('user')
 
         if (user) {
-            // res.setHeader('location', '/home')
+            res.setHeader('location', '/home')
             res.statusCode = 302
             res.end()
         }
