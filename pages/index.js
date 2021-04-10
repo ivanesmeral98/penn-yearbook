@@ -1,37 +1,17 @@
 import { useState, useEffect } from 'react'
 import { withIronSession } from 'next-iron-session'
-import { sendVerification, completeSignIn, login } from '../helpers/auth'
+import { sendVerification, completeSignIn } from '../helpers/auth'
 
 export default function Index() {
     const [email, setEmail] = useState()
     const [status, setStatus] = useState('loading')
-
-    // This is called from the auth helper file with the user object if successful
-    function signIn(authUser) {
-        if (!authUser) {
-            setStatus('linkFailed')
-            return
-        }
-        // Check if account has been created, if so complete auth, if not go to signup
-        fetch(`/api/userexists?email=${authUser.email}`)
-            .then((resp) => resp.json())
-            .then(({ user }) => {
-                if (user) login(user)
-                else {
-                    localStorage.setItem('verifiedEmail', authUser.email)
-                    window.location.assign('/signup')
-                }
-            })
-            .catch((err) => console.log('Error in fetch', err))
-    }
 
     useEffect(() => {
         const signInEmail = localStorage.getItem('emailForSignIn')
         /*
          If there is an email stored and the url has verification parameters, trigger the firebase auth function with signin as a callback.  If the url has verification parameters but no email is stored, link has already been used. Otherwise, this is a new login
          */
-        if (signInEmail && window.location.search)
-            completeSignIn(signInEmail, signIn)
+        if (signInEmail && window.location.search) completeSignIn(signInEmail)
         else if (!signInEmail && window.location.search) setStatus('linkFailed')
         else setStatus('ready')
     }, [])

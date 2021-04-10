@@ -1,5 +1,18 @@
 import { auth } from '../utils/firestore'
 
+export function login(user) {
+    fetch('/api/sessions', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify({ user }),
+    }).then((resp) => {
+        if (resp.status === 200) window.location.assign('/home')
+        else console.log('Error creating session', resp.status)
+    })
+}
+
 export function sendVerification(email, callback) {
     const actionCodeSettings = {
         // Redirects to verify page
@@ -18,31 +31,29 @@ export function sendVerification(email, callback) {
         })
 }
 
-export function completeSignIn(email, callback) {
+export function completeSignIn(email) {
     // Confirm the link is a sign-in with email link.
     if (auth.isSignInWithEmailLink(window.location.href)) {
         auth.signInWithEmailLink(email, window.location.href)
             .then((result) => {
                 // Clear email from storage.
                 window.localStorage.removeItem('emailForSignIn')
-                callback(result.user)
+                fetch(`/api/userexists?email=${result.user.email}`)
+                    .then((resp) => resp.json())
+                    .then(({ user }) => {
+                        if (user) login(user)
+                        else {
+                            localStorage.setItem(
+                                'verifiedEmail',
+                                result.user.email,
+                            )
+                            window.location.assign('/signup')
+                        }
+                    })
+                    .catch((err) => console.log('Error in fetch', err))
             })
             .catch((error) => {
                 console.log(error.code, error.message)
-                callback()
             })
-    } else callback()
-}
-
-export function login(user) {
-    fetch('/api/sessions', {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify({ user }),
-    }).then((resp) => {
-        if (resp.status === 200) window.location.assign('/home')
-        else console.log('Error creating session', resp.status)
-    })
+    }
 }
