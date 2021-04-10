@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from '../components/head'
+import { login, completeSignIn } from '../helpers/auth'
 
 export default function Index() {
     const [email, setEmail] = useState()
 
-    function submit() {
-        console.log(email)
+    useEffect(() => {
+        // Calls complete sign in when user clicks on link sent to their email -> adds to Firebase Auth
+        if (localStorage.getItem('emailForSignIn')) {
+            completeSignIn()
+        }
+    }, [])
+
+    function onSubmit() {
+        login(email)
     }
 
     return (
@@ -22,7 +30,7 @@ export default function Index() {
                         />
                         <p className="help">Sign in with your Penn email</p>
                     </div>
-                    <button className="button" onClick={submit}>
+                    <button className="button" onClick={onSubmit}>
                         Enter
                     </button>
                 </div>
