@@ -9,7 +9,7 @@ export function login(user) {
         body: JSON.stringify({ user }),
     }).then((resp) => {
         if (resp.status === 200) window.location.assign('/home')
-        else console.log('Error creating session', resp.status)
+        else console.error('Error creating session', resp.status)
     })
 }
 
@@ -26,7 +26,7 @@ export function sendVerification(email, callback) {
             callback('emailSent')
         })
         .catch((error) => {
-            console.log(error.code, error.message)
+            console.error(error.code, error.message)
             callback('emailError')
         })
 }
@@ -50,10 +50,10 @@ export function completeSignIn(email) {
                             window.location.assign('/signup')
                         }
                     })
-                    .catch((err) => console.log('Error in fetch', err))
+                    .catch((err) => console.error('Error in fetch', err))
             })
             .catch((error) => {
-                console.log(error.code, error.message)
+                console.error(error.code, error.message)
             })
     }
 }
