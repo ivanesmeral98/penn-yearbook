@@ -1,6 +1,7 @@
 import { withIronSession } from 'next-iron-session'
 import { useState } from 'react'
 import Student from '../components/student'
+import StudentModal from '../components/studentModal'
 import { alphaFilters } from '../helpers/constants'
 
 const sections = ['students', 'groups', 'notes']
@@ -8,6 +9,7 @@ const sections = ['students', 'groups', 'notes']
 export default function Home({ user, users }) {
     const [section, setSection] = useState('students')
     const [filter, setFilter] = useState()
+    const [selected, setSelected] = useState()
 
     return (
         <div className="home">
@@ -33,21 +35,32 @@ export default function Home({ user, users }) {
                                 filter &&
                                 u.lastName.charAt(0).toLowerCase() <
                                     filter.toLowerCase() ? null : (
-                                    <Student key={u.email} user={u} />
+                                    <span onClick={() => setSelected(u)}>
+                                        <Student key={u.email} user={u} />
+                                    </span>
                                 ),
                             )}
                         </div>
                         <div className="filters">
                             {alphaFilters.map((a) => (
                                 <p
-                                    className={filter === a && 'active'}
+                                    className={
+                                        filter === a
+                                            ? 'active filter'
+                                            : 'filter'
+                                    }
                                     onClick={() => setFilter(a)}
                                     key={a}
                                 >
                                     {a}
                                 </p>
                             ))}
+                            <p className="help">Filter by Last Name</p>
                         </div>
+                        <StudentModal
+                            user={selected}
+                            close={() => setSelected(false)}
+                        />
                     </>
                 )}
             </div>

@@ -36,11 +36,23 @@
         position: absolute;
         right: 2rem;
         bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
 
-        p {
+        .help {
+            text-align: right;
+            color: #aaa !important;
+            margin-top: 10px;
+        }
+
+        .filter {
             padding: 0px 5px;
+            width: 23px;
+            height: 23px;
             cursor: pointer;
             text-align: center;
+            margin-right: 10px;
 
             &.active {
                 background-color: $yb-light-blue;

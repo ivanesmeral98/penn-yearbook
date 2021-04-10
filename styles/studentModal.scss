@@ -1,0 +1,54 @@
+.student-modal {
+    .modal-background {
+        background-color: rgba(220, 220, 220, 0.6);
+    }
+
+    .modal-content {
+        background-color: $yb-white;
+        max-width: 1000px;
+        width: 80%;
+        height: auto;
+        max-height: 80%;
+        border-radius: 8px;
+        display: flex;
+        padding: 2rem;
+
+        .modal-close {
+            position: relative;
+            top: 20px;
+            right: 20px;
+            color: black;
+        }
+
+        .header {
+            font-size: 50px;
+        }
+
+        .text,
+        .tags {
+            margin-left: 20px;
+            display: block;
+        }
+
+        .text {
+            margin-bottom: 30px;
+        }
+
+        .image {
+            height: 30vw * 1.5;
+            width: 30vw;
+            max-height: 25vw * 1.5;
+            max-width: 25vw;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 2rem;
+        }
+
+        .close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            cursor: pointer;
+        }
+    }
+}
