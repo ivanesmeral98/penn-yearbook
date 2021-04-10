@@ -2,9 +2,9 @@ import { useRef } from 'react'
 
 export default function FileUpload(props) {
     const hiddenFileInput = useRef(null)
-    const { children, handleFile } = props
+    const { handleFile } = props
 
-    function handleClick(event) {
+    function handleClick() {
         hiddenFileInput.current.click()
     }
 

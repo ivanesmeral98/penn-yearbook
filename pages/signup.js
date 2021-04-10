@@ -3,7 +3,7 @@ import FileUpload from '../components/fileUpload'
 import { schools, majors, minors } from '../helpers/constants'
 
 export default function Signup() {
-    const [email, setEmail] = useState('evakill@seas.upenn.edu')
+    const [email, setEmail] = useState()
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [selectedSchools, setSelectedSchools] = useState([])
@@ -12,18 +12,17 @@ export default function Signup() {
     const [majorSearch, setMajorSearch] = useState()
     const [selectedMinors, setSelectedMinors] = useState([])
     const [minorSearch, setMinorSearch] = useState()
-    // const [activities, setActivities] = useState()
     const [quote, setQuote] = useState()
     const [image, setImage] = useState()
-    const [err, setErr] = useState()
+    const [error, setError] = useState()
 
     useEffect(() => {
-        // const email = localStorage.getItem('verifiedEmail')
-        // if (!email) window.location.assign('/')
-        // else {
-        //     setEmail(email)
-        //     localStorage.removeItem('verifiedEmail')
-        // }
+        const verifiedEmail = localStorage.getItem('verifiedEmail')
+        if (!verifiedEmail) window.location.assign('/')
+        else {
+            setEmail(verifiedEmail)
+            localStorage.removeItem('verifiedEmail')
+        }
     }, [])
 
     async function uploadFile() {
@@ -32,7 +31,7 @@ export default function Signup() {
         await fetch(`/api/imageupload`, {
             method: 'POST',
             body: photoData,
-            header: {
+            headers: {
                 'content-type': 'multipart/form-data',
             },
         })
@@ -40,38 +39,46 @@ export default function Signup() {
             .then(() => {})
             .catch((err) => {
                 console.log('Error setting photo', err)
-                setErr('photo')
+                setError('photo')
             })
     }
 
     async function submit() {
-        if (!firstName) {
-            setErr('required')
+        if (
+            !firstName ||
+            !lastName ||
+            !selectedSchools.length ||
+            !selectedMajors.length ||
+            !selectedMinors.length
+        ) {
+            setError('required')
             return
         }
-        if (!lastName) {
-            setErr('required')
-            return
-        }
-        await fetch(`/api/createuser`, {
+        await fetch(`/api/adduser`, {
             method: 'POST',
-            body: JSON.stringify({
-                email,
-                firstName,
-                lastName,
-                schools: selectedSchools,
-                majors: selectedMajors,
-                minors: selectedMinors,
-            }),
-            header: {
+            headers: {
                 'content-type': 'application/json',
             },
+            body: JSON.stringify({
+                user: {
+                    email,
+                    firstName,
+                    lastName,
+                    quote,
+                    schools: selectedSchools,
+                    majors: selectedMajors,
+                    minors: selectedMinors,
+                },
+            }),
         })
             .then((resp) => resp.json())
-            .then(() => {})
+            .then(({ user }) => {
+                console.log('created user', user)
+                uploadFile()
+            })
             .catch((err) => {
                 console.log('Error creating user', err)
-                setErr('user')
+                setError('user')
             })
     }
 
@@ -81,6 +88,19 @@ export default function Signup() {
                 <p className="header">Create a Profile</p>
             </div>
             <div className="form">
+                {error === 'required' && (
+                    <p className="text">Please enter all required fields.</p>
+                )}
+                {error === 'user' && (
+                    <p className="text">
+                        Error creating user, please try again.
+                    </p>
+                )}
+                {error === 'photo' && (
+                    <p className="text">
+                        Error uploading photo, please try again.
+                    </p>
+                )}
                 {email ? (
                     <>
                         <div className="columns">
@@ -91,7 +111,7 @@ export default function Signup() {
                                             First Name*
                                         </label>
                                         <input
-                                            className="input"
+                                            className="input name"
                                             type="text"
                                             onChange={(e) =>
                                                 setFirstName(e.target.value)
@@ -103,7 +123,7 @@ export default function Signup() {
                                             Last Name*
                                         </label>
                                         <input
-                                            className="input"
+                                            className="input name"
                                             type="text"
                                             onChange={(e) =>
                                                 setLastName(e.target.value)
@@ -113,8 +133,8 @@ export default function Signup() {
                                 </div>
                                 <div className="field">
                                     <label className="label">Quote</label>
-                                    <input
-                                        className="input long"
+                                    <textarea
+                                        className="textarea"
                                         type="text"
                                         onChange={(e) =>
                                             setQuote(e.target.value)
@@ -143,48 +163,48 @@ export default function Signup() {
                                         }
                                         value={schoolSearch}
                                     />
-                                    <button
-                                        className="button"
+                                    <span
+                                        className="button link"
                                         onClick={() => setSelectedSchools([])}
                                     >
                                         Clear
-                                    </button>
+                                    </span>
                                     <div className="tags">
                                         {selectedSchools &&
                                             selectedSchools.map((s) => (
-                                                <span className="tag">{s}</span>
+                                                <span className="tag" key={s}>
+                                                    {s}
+                                                </span>
                                             ))}
                                     </div>
                                     {schoolSearch &&
-                                        schools.map((s) => {
-                                            if (
-                                                s
-                                                    .toLowerCase()
-                                                    .indexOf(
-                                                        schoolSearch.toLowerCase(),
-                                                    ) !== -1
-                                            )
-                                                return (
-                                                    <p
-                                                        className="option"
-                                                        onClick={() => {
-                                                            setSchoolSearch('')
-                                                            if (
-                                                                selectedSchools.includes(
-                                                                    s,
-                                                                )
-                                                            )
-                                                                return
-                                                            setSelectedSchools([
+                                        schools.map((s) =>
+                                            s
+                                                .toLowerCase()
+                                                .indexOf(
+                                                    schoolSearch.toLowerCase(),
+                                                ) !== -1 ? (
+                                                <p
+                                                    key={s}
+                                                    className="option"
+                                                    onClick={() => {
+                                                        setSchoolSearch('')
+                                                        if (
+                                                            selectedSchools.includes(
                                                                 s,
-                                                                ...selectedSchools,
-                                                            ])
-                                                        }}
-                                                    >
-                                                        {s}
-                                                    </p>
-                                                )
-                                        })}
+                                                            )
+                                                        )
+                                                            return
+                                                        setSelectedSchools([
+                                                            s,
+                                                            ...selectedSchools,
+                                                        ])
+                                                    }}
+                                                >
+                                                    {s}
+                                                </p>
+                                            ) : null,
+                                        )}
                                 </div>
                                 <div className="field">
                                     <label className="label">Major(s)*</label>
@@ -197,48 +217,48 @@ export default function Signup() {
                                         }
                                         value={majorSearch}
                                     />
-                                    <button
-                                        className="button"
+                                    <span
+                                        className="button link"
                                         onClick={() => setSelectedMajors([])}
                                     >
                                         Clear
-                                    </button>
+                                    </span>
                                     <div className="tags">
                                         {selectedMajors &&
                                             selectedMajors.map((m) => (
-                                                <span className="tag">{m}</span>
+                                                <span key={m} className="tag">
+                                                    {m}
+                                                </span>
                                             ))}
                                     </div>
                                     {majorSearch &&
-                                        majors.map((m) => {
-                                            if (
-                                                m
-                                                    .toLowerCase()
-                                                    .indexOf(
-                                                        majorSearch.toLowerCase(),
-                                                    ) !== -1
-                                            )
-                                                return (
-                                                    <p
-                                                        className="option"
-                                                        onClick={() => {
-                                                            setMajorSearch('')
-                                                            if (
-                                                                selectedMajors.includes(
-                                                                    m,
-                                                                )
-                                                            )
-                                                                return
-                                                            setSelectedMajors([
+                                        majors.map((m) =>
+                                            m
+                                                .toLowerCase()
+                                                .indexOf(
+                                                    majorSearch.toLowerCase(),
+                                                ) !== -1 ? (
+                                                <p
+                                                    key={m}
+                                                    className="option"
+                                                    onClick={() => {
+                                                        setMajorSearch('')
+                                                        if (
+                                                            selectedMajors.includes(
                                                                 m,
-                                                                ...selectedMajors,
-                                                            ])
-                                                        }}
-                                                    >
-                                                        {m}
-                                                    </p>
-                                                )
-                                        })}
+                                                            )
+                                                        )
+                                                            return
+                                                        setSelectedMajors([
+                                                            m,
+                                                            ...selectedMajors,
+                                                        ])
+                                                    }}
+                                                >
+                                                    {m}
+                                                </p>
+                                            ) : null,
+                                        )}
                                 </div>
                                 <div className="field">
                                     <label className="label">Minor(s)*</label>
@@ -251,52 +271,54 @@ export default function Signup() {
                                         }
                                         value={minorSearch}
                                     />
-                                    <button
-                                        className="button"
+                                    <span
+                                        className="button link"
                                         onClick={() => setSelectedMinors([])}
                                     >
                                         Clear
-                                    </button>
+                                    </span>
                                     <div className="tags">
                                         {selectedMinors &&
                                             selectedMinors.map((m) => (
-                                                <span className="tag">{m}</span>
+                                                <span key={m} className="tag">
+                                                    {m}
+                                                </span>
                                             ))}
                                     </div>
                                     {minorSearch &&
-                                        minors.map((m) => {
-                                            if (
-                                                m
-                                                    .toLowerCase()
-                                                    .indexOf(
-                                                        minorSearch.toLowerCase(),
-                                                    ) !== -1
-                                            )
-                                                return (
-                                                    <p
-                                                        className="option"
-                                                        onClick={() => {
-                                                            setMinorSearch('')
-                                                            if (
-                                                                selectedMinors.includes(
-                                                                    m,
-                                                                )
-                                                            )
-                                                                return
-                                                            setSelectedMinors([
+                                        minors.map((m) =>
+                                            m
+                                                .toLowerCase()
+                                                .indexOf(
+                                                    minorSearch.toLowerCase(),
+                                                ) !== -1 ? (
+                                                <p
+                                                    key={m}
+                                                    className="option"
+                                                    onClick={() => {
+                                                        setMinorSearch('')
+                                                        if (
+                                                            selectedMinors.includes(
                                                                 m,
-                                                                ...selectedMinors,
-                                                            ])
-                                                        }}
-                                                    >
-                                                        {m}
-                                                    </p>
-                                                )
-                                        })}
+                                                            )
+                                                        )
+                                                            return
+                                                        setSelectedMinors([
+                                                            m,
+                                                            ...selectedMinors,
+                                                        ])
+                                                    }}
+                                                >
+                                                    {m}
+                                                </p>
+                                            ) : null,
+                                        )}
                                 </div>
                             </div>
                         </div>
-                        <button className="button submit">Submit</button>
+                        <button className="button submit" onClick={submit}>
+                            Submit
+                        </button>
                     </>
                 ) : (
                     <p className="text loading">Loading...</p>

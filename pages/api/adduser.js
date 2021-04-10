@@ -3,33 +3,13 @@ import db from '../../utils/firestore-backend'
 export default function adduser(req, res) {
     if (req.method === 'POST') {
         // Process a POST request
-        const {
-            firstName,
-            lastName,
-            email,
-            schools,
-            activities,
-            majors,
-            minors,
-            quote,
-            picture,
-        } = req.body
-        const user = {
-            firstName,
-            lastName,
-            email,
-            schools,
-            activities,
-            majors,
-            minors,
-            quote,
-            picture,
-        }
+        const { user } = req.body
         db.collection('users')
-            .doc(email)
+            .doc(user.email)
             .set(user)
             .then(() => {
                 console.log('Created user successfully')
+                res.status(200).send({ user })
             })
             .catch((err) => {
                 console.log(err)
@@ -37,9 +17,6 @@ export default function adduser(req, res) {
                     err: 'Error putting user in DB',
                 })
             })
-        res.status(200).send({
-            message: 'User successfully added to database.',
-        })
     } else {
         // Handle any other HTTP method
     }

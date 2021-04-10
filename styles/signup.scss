@@ -1,11 +1,11 @@
 .signup {
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     background-color: $yb-white;
-    padding: 2rem 3rem;
+    padding: 3rem 4rem;
 
     .header {
-        margin-bottom: 3rem;
+        margin-bottom: 15px;
     }
 
     .loading: {
@@ -18,17 +18,18 @@
 
     .submit {
         position: absolute;
-        right: 5rem;
-        bottom: 5rem;
+        right: 6rem;
+        bottom: 4rem;
         background-color: black;
+        border: none;
         color: white !important;
     }
 
     .form {
-        padding: 0 3rem;
+        padding: 0 2rem;
 
         .field {
-            margin: 20px 0 !important;
+            margin: 15px 0 !important;
 
             .label {
                 color: black !important;
@@ -36,11 +37,16 @@
             }
 
             .input {
-                margin-right: 30px;
-
-                &.long {
-                    width: 530px;
+                &.name {
+                    margin-right: 30px;
+                    width: 200px;
                 }
+            }
+
+            .textarea {
+                @extend .input;
+                min-width: 430px;
+                min-height: 80px !important;
             }
 
             .image {
@@ -49,7 +55,8 @@
                 object-fit: cover;
                 border: 1px solid black;
                 border-radius: 6px;
-                margin-top: 40px;
+                margin-top: 20px;
+                margin-bottom: 20px;
             }
 
             .option {
@@ -69,6 +76,17 @@
 
                 .tag {
                     background-color: $yb-light-blue;
+                }
+            }
+
+            .link {
+                border: none;
+                margin: 0px;
+                text-decoration: underline;
+                outline: none;
+
+                &:focus {
+                    outline: none !important;
                 }
             }
         }
