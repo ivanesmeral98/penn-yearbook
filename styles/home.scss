@@ -11,10 +11,13 @@
 
         .header-links {
             display: flex;
+            margin-right: 2rem;
+
             p {
                 margin: 0 10px;
                 padding: 10px;
                 cursor: pointer;
+                text-transform: capitalize;
 
                 &.active {
                     background-color: $yb-light-blue;
@@ -27,5 +30,22 @@
     .user-grid {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    .filters {
+        position: absolute;
+        right: 2rem;
+        bottom: 2rem;
+
+        p {
+            padding: 0px 5px;
+            cursor: pointer;
+            text-align: center;
+
+            &.active {
+                background-color: $yb-light-blue;
+                border-radius: 20px;
+            }
+        }
     }
 }
