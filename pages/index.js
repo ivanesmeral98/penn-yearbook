@@ -15,11 +15,16 @@ export default function Index() {
                 <p className="title">Class of 2021 Digital Yearbook</p>
                 <div className="is-flex">
                     <div className="field">
-                        <input
-                            className="input"
-                            placeholder="Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <p className="control has-icons-left">
+                            <input
+                                className="input"
+                                type="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <span className="icon is-small is-left">
+                                <img src="/mail.svg" />
+                            </span>
+                        </p>
                         <p className="help">Sign in with your Penn email</p>
                     </div>
                     <button className="button" onClick={submit}>
