@@ -6,23 +6,18 @@ export default function Index() {
     const [status, setStatus] = useState('loading')
 
     // This is called from the auth helper file with the user object if successful
-    function signIn(user) {
-        if (!user) {
+    function signIn(authUser) {
+        if (!authUser) {
             setStatus('linkFailed')
             return
         }
-
-        console.log('Verified user:', user.email)
-        /*
         // Check if account has been created, if so complete auth, if not go to signup
-        fetch(`/user/${user.email}`)
-            .then(resp => resp.json())
-            .then(({ user, err }) => {
-                if (err) console.log('Error getting user:', err)
-                else if (user) window.location.assign('/home')
+        fetch(`/api/userexists?email=${authUser.email}`)
+            .then((resp) => resp.json())
+            .then((user) => {
+                if (user) window.location.assign('/home')
             })
             .catch((err) => console.log('Error in fetch', err))
-        */
     }
 
     useEffect(() => {

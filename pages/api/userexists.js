@@ -1,14 +1,13 @@
 import db from '../../utils/firestore-backend'
 
-export default function adduser(req, res) {
+export default function userexists(req, res) {
     if (req.method === 'GET') {
         const { email } = req.query
+        console.log('here', email)
         const users = db.collection('users').doc(email)
-        users.get().then((snapshot) => {
-            if (snapshot.exists) {
-                users.onSnapshot((doc) => {
-                    res.send(doc.data())
-                })
+        users.get().then((doc) => {
+            if (doc.exists) {
+                res.send(doc.data())
             } else {
                 res.send({})
             }
