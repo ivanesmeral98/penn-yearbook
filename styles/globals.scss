@@ -1,3 +1,6 @@
+@import './colors.scss';
+@import './index.scss';
+
 html,
 body {
     padding: 0;
@@ -13,4 +16,11 @@ a {
 
 * {
     box-sizing: border-box;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px 20px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
