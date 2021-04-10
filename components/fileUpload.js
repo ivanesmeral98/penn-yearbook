@@ -1,28 +1,29 @@
-import { useRef } from 'react'
+import FileUploader from 'react-firebase-file-uploader'
+import { storage } from '../utils/firestore'
 
-export default function FileUpload(props) {
-    const hiddenFileInput = useRef(null)
-    const { handleFile } = props
-
-    function handleClick() {
-        hiddenFileInput.current.click()
+export default function FileUpload({ handleFile }) {
+    function handleUploadError(err) {
+        console.error(err)
     }
 
-    function handleChange(event) {
-        const file = event.target.files[0]
-        handleFile(file)
+    function handleUploadSuccess(filename) {
+        storage
+            .ref('images')
+            .child(filename)
+            .getDownloadURL()
+            .then((url) => handleFile(url))
     }
 
     return (
-        <div className="clickable" onClick={handleClick}>
-            <input
-                type="file"
+        <label className="button">
+            Upload Image
+            <FileUploader
+                hidden
                 accept="image/*"
-                ref={hiddenFileInput}
-                onChange={handleChange}
-                style={{ display: 'none' }}
+                storageRef={storage.ref('images')}
+                onUploadError={handleUploadError}
+                onUploadSuccess={handleUploadSuccess}
             />
-            <div className="button">Upload Image</div>
-        </div>
+        </label>
     )
 }

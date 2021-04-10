@@ -25,24 +25,6 @@ export default function Signup() {
         }
     }, [])
 
-    async function uploadFile() {
-        const photoData = new FormData()
-        photoData.append('image', image)
-        await fetch(`/api/imageupload`, {
-            method: 'POST',
-            body: photoData,
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        })
-            .then((resp) => resp.json())
-            .then(() => {})
-            .catch((err) => {
-                console.log('Error setting photo', err)
-                setError('photo')
-            })
-    }
-
     async function submit() {
         if (
             !firstName ||
@@ -65,6 +47,7 @@ export default function Signup() {
                     firstName,
                     lastName,
                     quote,
+                    image,
                     schools: selectedSchools,
                     majors: selectedMajors,
                     minors: selectedMinors,
@@ -74,7 +57,6 @@ export default function Signup() {
             .then((resp) => resp.json())
             .then(({ user }) => {
                 console.log('created user', user)
-                uploadFile()
             })
             .catch((err) => {
                 console.log('Error creating user', err)
@@ -143,10 +125,7 @@ export default function Signup() {
                                 </div>
                                 <div className="field">
                                     {image && (
-                                        <img
-                                            className="image"
-                                            src={URL.createObjectURL(image)}
-                                        />
+                                        <img className="image" src={image} />
                                     )}
                                     <FileUpload handleFile={setImage} />
                                 </div>
@@ -265,7 +244,7 @@ export default function Signup() {
                                     <input
                                         className="input"
                                         type="text"
-                                        placeholder="Search for your major..."
+                                        placeholder="Search for your minor..."
                                         onChange={(e) =>
                                             setMinorSearch(e.target.value)
                                         }
@@ -286,30 +265,30 @@ export default function Signup() {
                                             ))}
                                     </div>
                                     {minorSearch &&
-                                        minors.map((m) =>
-                                            m
+                                        minors.map((mi) =>
+                                            mi
                                                 .toLowerCase()
                                                 .indexOf(
                                                     minorSearch.toLowerCase(),
                                                 ) !== -1 ? (
                                                 <p
-                                                    key={m}
+                                                    key={mi}
                                                     className="option"
                                                     onClick={() => {
                                                         setMinorSearch('')
                                                         if (
                                                             selectedMinors.includes(
-                                                                m,
+                                                                mi,
                                                             )
                                                         )
                                                             return
                                                         setSelectedMinors([
-                                                            m,
+                                                            mi,
                                                             ...selectedMinors,
                                                         ])
                                                     }}
                                                 >
-                                                    {m}
+                                                    {mi}
                                                 </p>
                                             ) : null,
                                         )}
