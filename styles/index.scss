@@ -21,13 +21,26 @@
 
     .input {
         width: 250px;
+        border-color: black;
+        background-color: transparent;
+        &:focus {
+            outline-color: black;
+        }
     }
 
     .button {
         margin: 0px 10px;
+        outline-color: black;
+        border-color: black;
+        background-color: transparent;
     }
 
     .help {
         margin: 10px;
+    }
+
+    * {
+        font-family: 'Archivo', serif;
+        color: black;
     }
 }
