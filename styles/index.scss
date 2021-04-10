@@ -8,6 +8,22 @@
 
     .blue-background {
         padding: 5rem;
+
+        @media (max-width: $mobile) {
+            padding: 1rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .title {
+                font-size: 30px !important;
+            }
+
+            .text {
+                font-size: 14px;
+            }
+        }
     }
 
     .help {

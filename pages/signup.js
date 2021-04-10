@@ -5,7 +5,7 @@ import { schools, majors, minors } from '../helpers/constants'
 import { login } from '../helpers/auth'
 
 export default function Signup() {
-    const [email, setEmail] = useState('y')
+    const [email, setEmail] = useState()
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [selectedSchools, setSelectedSchools] = useState([])
@@ -97,7 +97,7 @@ export default function Signup() {
                     <>
                         <div className="columns">
                             <div className="column">
-                                <div className="is-flex">
+                                <div className="names-input-container">
                                     <div className="field">
                                         <label className="label">
                                             First Name*

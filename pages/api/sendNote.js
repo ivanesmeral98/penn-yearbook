@@ -20,7 +20,7 @@ export default function sendNote(req, res) {
         }
         db.collection('notes')
             .add(note)
-            .then((ref) => {
+            .then(() => {
                 res.status(200).send({
                     note,
                 })

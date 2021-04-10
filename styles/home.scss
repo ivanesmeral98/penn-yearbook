@@ -6,20 +6,45 @@
     margin: 1rem;
     border: 6px solid transparentize($yb-light-blue, 0.4);
 
+    @media (max-width: $mobile) {
+        padding: 2rem 1.5rem;
+    }
+
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
 
+        @media (max-width: $mobile) {
+            flex-direction: column;
+        }
+
+        @media (max-width: $mobile) {
+            .header {
+                font-size: 30px;
+            }
+        }
+
         .header-links {
             display: flex;
             margin-right: 2rem;
+
+            @media (max-width: $mobile) {
+                margin-right: 1rem;
+                margin-bottom: 1rem;
+            }
 
             p {
                 margin: 0 10px;
                 padding: 10px;
                 cursor: pointer;
                 text-transform: capitalize;
+
+                @media (max-width: $mobile) {
+                    margin: 0 7px 0 0;
+                    padding: 7px;
+                    font-size: 14px;
+                }
 
                 &.active {
                     background-color: $yb-light-blue;
@@ -42,10 +67,19 @@
         flex-direction: column;
         align-items: flex-end;
 
+        @media (max-width: $mobile) {
+            right: 3rem;
+            bottom: 2rem;
+        }
+
         .help {
             text-align: right;
             color: #aaa !important;
             margin-top: 10px;
+
+            @media (max-width: $mobile) {
+                width: 60px;
+            }
         }
 
         .filter {
