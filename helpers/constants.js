@@ -104,6 +104,7 @@ export const minors = [
     'Cognitive Science',
     'Communication',
     'Comparative Literature',
+    'Creative Writing',
     'Criminology',
     'Earth Science',
     'East Asian Area Studies',
