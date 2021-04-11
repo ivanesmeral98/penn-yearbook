@@ -1,14 +1,21 @@
 import { useState } from 'react'
 
-export default function WriteNote({ active, user, users, close, onSend }) {
+export default function WriteNote({
+    active,
+    user,
+    group,
+    users,
+    close,
+    onSend,
+}) {
     if (!active) return <div />
     const [toEmail, setToEmail] = useState()
-    const [toSearch, setToSeach] = useState()
+    const [toSearch, setToSearch] = useState()
     const [message, setMessage] = useState()
     const [error, setError] = useState()
 
     function send() {
-        if (!toEmail || !message) {
+        if ((!group && !toEmail) || !message) {
             setError('Please fill out the required fields.')
             return
         }
@@ -23,6 +30,7 @@ export default function WriteNote({ active, user, users, close, onSend }) {
                 fromEmail: user.email,
                 toEmail,
                 message,
+                toGroup: group.name,
             }),
         }).then((resp) => {
             if (resp.status === 200) {
@@ -43,52 +51,59 @@ export default function WriteNote({ active, user, users, close, onSend }) {
                     <img src="/x-circle.svg" />
                 </span>
 
-                <div className="field">
-                    <label className="label">To</label>
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Search by name or email..."
-                        onChange={(e) => !toEmail && setToSeach(e.target.value)}
-                        value={toSearch}
-                        disabled={toEmail}
-                    />
-                    <span
-                        className="button link"
-                        onClick={() => setToEmail('')}
-                    >
-                        Clear
-                    </span>
-                    <div className="tags">
-                        {toEmail && <span className="tag">{toEmail}</span>}
+                {!group && (
+                    <div className="field">
+                        <label className="label">To</label>
+                        <input
+                            className="input"
+                            type="text"
+                            placeholder="Search by name or email..."
+                            onChange={(e) =>
+                                !toEmail && setToSearch(e.target.value)
+                            }
+                            value={toSearch}
+                            disabled={toEmail}
+                        />
+                        <span
+                            className="button link"
+                            onClick={() => setToEmail('')}
+                        >
+                            Clear
+                        </span>
+                        <div className="tags">
+                            {toEmail && <span className="tag">{toEmail}</span>}
+                        </div>
+                        {toSearch &&
+                            users.map((u) =>
+                                (u.email
+                                    .toLowerCase()
+                                    .indexOf(toSearch.toLowerCase()) !== -1 ||
+                                    u.firstName
+                                        .toLowerCase()
+                                        .indexOf(toSearch.toLowerCase()) !==
+                                        -1 ||
+                                    u.lastName
+                                        .toLowerCase()
+                                        .indexOf(toSearch.toLowerCase()) !==
+                                        -1 ||
+                                    `${u.firstName} ${u.lastName}`
+                                        .toLowerCase()
+                                        .indexOf(toSearch.toLowerCase())) !==
+                                -1 ? (
+                                    <p
+                                        key={u.email}
+                                        className="option"
+                                        onClick={() => {
+                                            setToSearch('')
+                                            setToEmail(u.email)
+                                        }}
+                                    >
+                                        {u.firstName} {u.lastName} ({u.email})
+                                    </p>
+                                ) : null,
+                            )}
                     </div>
-                    {toSearch &&
-                        users.map((u) =>
-                            (u.email
-                                .toLowerCase()
-                                .indexOf(toSearch.toLowerCase()) !== -1 ||
-                                u.firstName
-                                    .toLowerCase()
-                                    .indexOf(toSearch.toLowerCase()) !== -1 ||
-                                u.lastName
-                                    .toLowerCase()
-                                    .indexOf(toSearch.toLowerCase()) !== -1 ||
-                                `${u.firstName} ${u.lastName}`
-                                    .toLowerCase()
-                                    .indexOf(toSearch.toLowerCase())) !== -1 ? (
-                                <p
-                                    key={u.email}
-                                    className="option"
-                                    onClick={() => {
-                                        setToSeach('')
-                                        setToEmail(u.email)
-                                    }}
-                                >
-                                    {u.firstName} {u.lastName} ({u.email})
-                                </p>
-                            ) : null,
-                        )}
-                </div>
+                )}
                 <div className="field">
                     <label className="label">Message</label>
                     <textarea

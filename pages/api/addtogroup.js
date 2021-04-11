@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 import db from '../../utils/firestore-backend'
 
-export default async function addToGroup(req, res) {
+export default async function addtogroup(req, res) {
     if (req.method === 'POST') {
         // Process a POST request
         const { groupName, email } = req.body

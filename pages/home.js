@@ -6,6 +6,7 @@ import WriteNote from '../components/writeNote'
 import AcceptNote from '../components/acceptNote'
 import Note from '../components/note'
 import CreateGroup from '../components/createGroup'
+import AddMember from '../components/addMember'
 import { alphaFilters } from '../helpers/constants'
 
 const sections = ['students', 'groups', 'notes']
@@ -20,7 +21,7 @@ export default function Home({ user, users, notes, groups }) {
     const [acceptedNotes, setAcceptedNotes] = useState(
         notes.filter((n) => n.accepted),
     )
-    const [write, setWrite] = useState(false)
+    const [write, setWrite] = useState()
     const [accept, setAccept] = useState()
     const [sent, setSent] = useState()
     const [acceptError, setAcceptError] = useState()
@@ -28,6 +29,9 @@ export default function Home({ user, users, notes, groups }) {
     const [group, setGroup] = useState(groups[0] || {})
     const [create, setCreate] = useState()
     const [createError, setCreateError] = useState()
+    const [addMember, setAddMember] = useState()
+    const [addError, setAddError] = useState()
+    const [leaveError, setLeaveError] = useState()
 
     async function onSend(success) {
         setSent(
@@ -58,6 +62,55 @@ export default function Home({ user, users, notes, groups }) {
         } else {
             setCreateError('Sorry, something went wrong. Please try again.')
         }
+    }
+
+    function onAddMember(success, newUser) {
+        if (success) {
+            const newGroup = { ...group, members: [newUser, ...group.members] }
+            const newGroups = allGroups.map((g) =>
+                g.name === newGroup.name ? newGroup : g,
+            )
+            setAllGroups(newGroups)
+            setGroup(newGroup)
+        } else {
+            setAddError('Error adding user, please try again.')
+            setTimeout(() => setAddError(), 5000)
+        }
+    }
+
+    function leaveGroup() {
+        fetch('/api/leavegroup', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                groupName: group.name,
+            }),
+        })
+            .then((resp) => {
+                if (resp.status === 200) {
+                    const newGroup = {
+                        ...group,
+                        members: group.members.filter(
+                            (m) => m.email === user.email,
+                        ),
+                    }
+                    const newGroups = allGroups.filter(
+                        (g) => g.name !== newGroup.name,
+                    )
+                    setAllGroups(newGroups)
+                    setGroup(newGroups[0])
+                } else {
+                    setLeaveError(
+                        'Sorry, something went wrong. Please try again.',
+                    )
+                }
+            })
+            .catch(() =>
+                setLeaveError('Sorry, something went wrong. Please try again.'),
+            )
     }
 
     function renderStudents() {
@@ -103,7 +156,7 @@ export default function Home({ user, users, notes, groups }) {
                     <div>
                         <button
                             className="button"
-                            onClick={() => setWrite(true)}
+                            onClick={() => setWrite('user')}
                         >
                             <img src="/send.svg" />
                             Send Note
@@ -147,7 +200,7 @@ export default function Home({ user, users, notes, groups }) {
                     user={user}
                     users={users}
                     active={write}
-                    close={() => setWrite(false)}
+                    close={() => setWrite()}
                     onSend={onSend}
                 />
                 <AcceptNote
@@ -187,11 +240,64 @@ export default function Home({ user, users, notes, groups }) {
                     </button>
                     {createError && <p className="help">{createError}</p>}
                 </div>
-                <div className="group-page"></div>
+                <div className="group-page">
+                    <div className="group-header">
+                        <div>
+                            <p className="group-name">{group.name}</p>
+                            <p className="text">{group.description}</p>
+                            <div className="tags">
+                                {group.members.map((m) => (
+                                    <div className="tag" key={m.email}>
+                                        {m.firstName} {m.lastName}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <div className="group-actions">
+                                <button
+                                    className="button"
+                                    onClick={() => setAddMember(group)}
+                                >
+                                    <img src="/user-plus.svg" />
+                                    Add Members
+                                </button>
+                                <button className="button" onClick={leaveGroup}>
+                                    <img src="/user-x.svg" />
+                                    Leave Group
+                                </button>
+                                <button
+                                    className="button"
+                                    onClick={() => setWrite('group')}
+                                >
+                                    <img src="/send.svg" />
+                                    Post Group Note
+                                </button>
+                            </div>
+                            {leaveError && <p className="help">{leaveError}</p>}
+                            {addError && <p className="help">{addError}</p>}
+                            {sent && <p className="help">{sent}</p>}
+                        </div>
+                    </div>
+                </div>
                 <CreateGroup
                     user={create}
                     close={() => setCreate()}
                     onCreate={onCreateGroup}
+                />
+                <AddMember
+                    group={addMember}
+                    users={users}
+                    close={() => setAddMember()}
+                    onAdd={onAddMember}
+                />
+                <WriteNote
+                    user={user}
+                    users={users}
+                    group={group}
+                    active={write}
+                    close={() => setWrite()}
+                    onSend={onSend}
                 />
             </div>
         )
