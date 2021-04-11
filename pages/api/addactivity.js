@@ -1,7 +1,6 @@
 import db from '../../utils/firestore-backend'
 
 export default function addactivity(req, res) {
-    console.log('entered')
     if (req.method === 'POST') {
         // Process a POST request
         const { name } = req.body

@@ -2,7 +2,7 @@ import db from '../../../utils/firestore-backend'
 
 export default function acceptNote(req, res) {
     if (req.method === 'GET') {
-        const { noteid } = req.query
+        const { noteid, accepted } = req.query
         if (accepted) {
             const noteOfInterest = db.collection('notes').doc(noteid)
             noteOfInterest
