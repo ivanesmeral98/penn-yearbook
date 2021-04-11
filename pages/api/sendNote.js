@@ -14,7 +14,7 @@ export default function sendnote(req, res) {
             fromName: `${fromFirstName} ${fromLastName}`,
             fromEmail,
             toEmail: toEmail || '',
-            toGroup: toGroup || '',
+            toGroup: db.doc(`groups/${toGroup}`) || '',
             message,
             accepted: false,
         }

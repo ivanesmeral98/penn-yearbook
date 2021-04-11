@@ -3,10 +3,11 @@ import db from '../../utils/firestore-backend'
 export default function creategroup(req, res) {
     if (req.method === 'POST') {
         // Process a POST request
-        const { name, description } = req.body
+        const { name, description, email } = req.body
         const group = {
             name,
             description,
+            members: [db.doc(`users/${email}`)],
         }
         const groupOfInterest = db.collection('groups').doc(name)
         // checking existence of group, if already made then dont make
