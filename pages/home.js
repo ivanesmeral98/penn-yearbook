@@ -8,6 +8,7 @@ import { alphaFilters } from '../helpers/constants'
 const sections = ['students', 'groups', 'notes']
 
 export default function Home({ user, users, notes }) {
+    if (!user) window.location.redirect('/')
     const [section, setSection] = useState('students')
     const [filter, setFilter] = useState()
     const [selected, setSelected] = useState()
@@ -141,6 +142,7 @@ export const getServerSideProps = withIronSession(
             res.setHeader('location', '/')
             res.statusCode = 302
             res.end()
+            return {props: {}}
         }
 
         let resp = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/getusers`)
