@@ -177,20 +177,39 @@
     }
 
     .groups-container {
+        display: flex;
+        padding: 2rem 0;
+
         .groups-list {
-            margin: 2rem 0;
+            margin-right: 30px;
 
             .option {
                 width: 200px;
                 margin: 0;
+                font-size: 14px;
 
                 &.active {
-                    background-color: $yb-light-blue;
+                    background-color: #ddd;
                 }
             }
 
             .button {
                 margin: 20px 0;
+            }
+        }
+
+        .group-page {
+            width: 100%;
+
+            .group-header {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+
+                .group-name {
+                    font-size: 30px;
+                    font-weight: 500;
+                }
             }
         }
     }

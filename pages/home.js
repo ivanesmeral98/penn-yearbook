@@ -6,6 +6,7 @@ import WriteNote from '../components/writeNote'
 import AcceptNote from '../components/acceptNote'
 import Note from '../components/note'
 import CreateGroup from '../components/createGroup'
+import AddMember from '../components/addMember'
 import { alphaFilters } from '../helpers/constants'
 
 const sections = ['students', 'groups', 'notes']
@@ -28,6 +29,8 @@ export default function Home({ user, users, notes, groups }) {
     const [group, setGroup] = useState(groups[0] || {})
     const [create, setCreate] = useState()
     const [createError, setCreateError] = useState()
+    const [addMember, setAddMember] = useState()
+    const [addError, setAddError] = useState()
 
     async function onSend(success) {
         setSent(
@@ -57,6 +60,20 @@ export default function Home({ user, users, notes, groups }) {
             setGroup(newGroup)
         } else {
             setCreateError('Sorry, something went wrong. Please try again.')
+        }
+    }
+
+    function onAddMember(success, newUser) {
+        if (success) {
+            const newGroup = { ...group, members: [newUser, ...group.members] }
+            const newGroups = allGroups.map((g) =>
+                g.name === newGroup.name ? newGroup : g,
+            )
+            setAllGroups(newGroups)
+            setGroup(newGroup)
+        } else {
+            setAddError('Error adding user, please try again.')
+            setTimeout(() => setAddError(), 5000)
         }
     }
 
@@ -187,11 +204,41 @@ export default function Home({ user, users, notes, groups }) {
                     </button>
                     {createError && <p className="help">{createError}</p>}
                 </div>
-                <div className="group-page"></div>
+                <div className="group-page">
+                    <div className="group-header">
+                        <div>
+                            <p className="group-name">{group.name}</p>
+                            <p className="text">{group.description}</p>
+                            <div className="tags">
+                                {group.members.map((m) => (
+                                    <div className="tag" key={m.email}>
+                                        {m.firstName} {m.lastName}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <button
+                                className="button"
+                                onClick={() => setAddMember(group)}
+                            >
+                                <img src="/user-plus.svg" />
+                                Add Members
+                            </button>
+                            {addError && <p className="help">{addError}</p>}
+                        </div>
+                    </div>
+                </div>
                 <CreateGroup
                     user={create}
                     close={() => setCreate()}
                     onCreate={onCreateGroup}
+                />
+                <AddMember
+                    group={addMember}
+                    users={users}
+                    close={() => setAddMember()}
+                    onAdd={onAddMember}
                 />
             </div>
         )

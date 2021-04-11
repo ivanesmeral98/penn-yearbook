@@ -25,6 +25,6 @@ export default function getGroups(req, res) {
                 res.status(200).send(data)
             })
     } else {
-        console.log('NEED GET REQUEST')
+        res.status(404).send()
     }
 }

@@ -19,7 +19,7 @@ export default function CreateGroup({ user, onCreate, close }) {
             body: JSON.stringify({
                 name,
                 description,
-                user,
+                email: user.email,
             }),
         }).then((resp) => {
             if (resp.status === 200) {
