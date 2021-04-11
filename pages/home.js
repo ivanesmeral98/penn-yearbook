@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Student from '../components/student'
 import StudentModal from '../components/studentModal'
 import WriteNote from '../components/writeNote'
+import AcceptNote from '../components/acceptNote'
+import Note from '../components/note'
 import { alphaFilters } from '../helpers/constants'
 
 const sections = ['students', 'groups', 'notes']
@@ -12,10 +14,14 @@ export default function Home({ user, users, notes }) {
     const [section, setSection] = useState('students')
     const [filter, setFilter] = useState()
     const [selected, setSelected] = useState()
-    const [newNotes] = useState(notes.filter((n) => !n.accepted))
-    const [acceptedNotes] = useState(notes.filter((n) => n.accepted))
+    const [newNotes, setNewNotes] = useState(notes.filter((n) => !n.accepted))
+    const [acceptedNotes, setAcceptedNotes] = useState(
+        notes.filter((n) => n.accepted),
+    )
     const [write, setWrite] = useState(false)
+    const [accept, setAccept] = useState()
     const [sent, setSent] = useState()
+    const [acceptError, setAcceptError] = useState()
 
     async function onSend(success) {
         setSent(
@@ -26,16 +32,29 @@ export default function Home({ user, users, notes }) {
         setTimeout(() => setSent(), 5000)
     }
 
+    function onAcceptNote(status, note) {
+        if (status === 'Accepted') {
+            setAcceptedNotes([note, ...acceptedNotes])
+            setNewNotes(newNotes.filter((n) => n.id !== note.id))
+        } else if (status === 'Deleted') {
+            setNewNotes(newNotes.filter((n) => n.id !== note.id))
+        } else {
+            setAcceptError('Sorry, something went wrong. Please try again.')
+            setTimeout(() => setAcceptError(), 5000)
+        }
+        setAccept(false)
+    }
+
     function renderStudents() {
         return (
             <div className="students-container">
                 <div className="user-grid">
-                    {users.map((u) =>
+                    {users.map((u, i) =>
                         filter &&
                         u.lastName.charAt(0).toLowerCase() <
                             filter.toLowerCase() ? null : (
                             <span onClick={() => setSelected(u)}>
-                                <Student key={u.email} user={u} />
+                                <Student key={u.email + i} user={u} />
                             </span>
                         ),
                     )}
@@ -70,7 +89,11 @@ export default function Home({ user, users, notes }) {
                         <div>
                             <div className="tags">
                                 {newNotes.slice(0, 3).map((n) => (
-                                    <div className="tag" key={n.fromEmail}>
+                                    <div
+                                        className="tag"
+                                        key={n.fromEmail}
+                                        onClick={() => setAccept(n)}
+                                    >
                                         New note from {n.fromName}!
                                     </div>
                                 ))}
@@ -79,6 +102,9 @@ export default function Home({ user, users, notes }) {
                                 <p className="help">
                                     ...and {newNotes.length - 3} more :)
                                 </p>
+                            )}
+                            {acceptError && (
+                                <p className="help">{acceptError}</p>
                             )}
                         </div>
                     ) : (
@@ -97,7 +123,7 @@ export default function Home({ user, users, notes }) {
                 </div>
                 <div className="notes-grid">
                     {acceptedNotes.length > 0 ? (
-                        acceptedNotes.map(n => <Note note={n} />)
+                        acceptedNotes.map((n) => <Note key={n.id} note={n} />)
                     ) : (
                         <div className="text">No notes yet!</div>
                     )}
@@ -108,6 +134,12 @@ export default function Home({ user, users, notes }) {
                     active={write}
                     close={() => setWrite(false)}
                     onSend={onSend}
+                />
+                <AcceptNote
+                    user={user}
+                    note={accept}
+                    close={() => setAccept(false)}
+                    onSubmit={onAcceptNote}
                 />
             </div>
         )
@@ -120,11 +152,11 @@ export default function Home({ user, users, notes }) {
     return (
         <div className="home">
             <div className="header-container">
-                <p className="header">Hey, {user.firstName}</p>
+                <p className="header">{user.firstName}&apos;s Yearbook</p>
                 <div className="header-links">
                     {sections.map((s) => (
                         <p
-                            className={section === s && 'active'}
+                            className={section === s ? 'active' : ''}
                             onClick={() => setSection(s.toLowerCase())}
                             key={s}
                         >
@@ -148,7 +180,7 @@ export const getServerSideProps = withIronSession(
             res.setHeader('location', '/')
             res.statusCode = 302
             res.end()
-            return {props: {}}
+            return { props: {} }
         }
 
         let resp = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/getusers`)

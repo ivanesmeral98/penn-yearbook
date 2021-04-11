@@ -23,6 +23,7 @@
 
         .header {
             margin: 0;
+            font-weight: 500;
 
             @media (max-width: $mobile) {
                 font-size: 30px;
@@ -164,6 +165,10 @@
                     margin: 10px 0;
                 }
             }
+        }
+        .notes-grid {
+            display: flex;
+            flex-wrap: wrap;
         }
     }
 }

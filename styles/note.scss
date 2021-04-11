@@ -1,0 +1,18 @@
+.note {
+    margin: 20px;
+    padding: 10px 20px;
+    max-height: 300px;
+    min-width: 100px;
+    max-width: 50%;
+
+    .label {
+        margin: 10px 0 0;
+        text-align: right;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .text {
+        font-family: 'Frank Ruhl Libre', serif;
+    }
+}
