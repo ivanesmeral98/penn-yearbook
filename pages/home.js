@@ -31,6 +31,7 @@ export default function Home({ user, users, notes, groups }) {
     const [createError, setCreateError] = useState()
     const [addMember, setAddMember] = useState()
     const [addError, setAddError] = useState()
+    const [leaveError, setLeaveError] = useState()
 
     async function onSend(success) {
         setSent(
@@ -75,6 +76,41 @@ export default function Home({ user, users, notes, groups }) {
             setAddError('Error adding user, please try again.')
             setTimeout(() => setAddError(), 5000)
         }
+    }
+
+    function leaveGroup() {
+        fetch('/api/leavegroup', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                groupName: group.name,
+            }),
+        })
+            .then((resp) => {
+                if (resp.status === 200) {
+                    const newGroup = {
+                        ...group,
+                        members: group.members.filter(
+                            (m) => m.email === user.email,
+                        ),
+                    }
+                    const newGroups = allGroups.filter(
+                        (g) => g.name !== newGroup.name,
+                    )
+                    setAllGroups(newGroups)
+                    setGroup(newGroups[0])
+                } else {
+                    setLeaveError(
+                        'Sorry, something went wrong. Please try again.',
+                    )
+                }
+            })
+            .catch(() =>
+                setLeaveError('Sorry, something went wrong. Please try again.'),
+            )
     }
 
     function renderStudents() {
@@ -217,7 +253,7 @@ export default function Home({ user, users, notes, groups }) {
                                 ))}
                             </div>
                         </div>
-                        <div>
+                        <div className="group-actions">
                             <button
                                 className="button"
                                 onClick={() => setAddMember(group)}
@@ -226,6 +262,11 @@ export default function Home({ user, users, notes, groups }) {
                                 Add Members
                             </button>
                             {addError && <p className="help">{addError}</p>}
+                            <button className="button" onClick={leaveGroup}>
+                                <img src="/user-x.svg" />
+                                Leave Group
+                            </button>
+                            {leaveError && <p className="help">{leaveError}</p>}
                         </div>
                     </div>
                 </div>
