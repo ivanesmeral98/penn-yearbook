@@ -95,7 +95,13 @@ export default function Home({ user, users, notes }) {
                         {sent && <div className="help">{sent}</div>}
                     </div>
                 </div>
-                <div className="notes-grid"></div>
+                <div className="notes-grid">
+                    {acceptedNotes.length > 0 ? (
+                        acceptedNotes.map(n => <Note note={n} />)
+                    ) : (
+                        <div className="text">No notes yet!</div>
+                    )}
+                </div>
                 <WriteNote
                     user={user}
                     users={users}
