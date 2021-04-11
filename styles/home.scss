@@ -155,7 +155,9 @@
                 }
             }
 
-            button {
+            .button {
+                margin: 0;
+
                 img {
                     margin-right: 10px;
                 }
@@ -167,13 +169,13 @@
             }
 
             .help {
-                text-align: right;
-                margin: 10px;
+                text-align: left;
             }
         }
         .notes-grid {
             display: flex;
             flex-wrap: wrap;
+            overflow: scroll;
         }
     }
 }

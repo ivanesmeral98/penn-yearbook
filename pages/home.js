@@ -85,6 +85,16 @@ export default function Home({ user, users, notes }) {
         return (
             <div className="notes-container">
                 <div className="notes-admin">
+                    <div>
+                        <button
+                            className="button"
+                            onClick={() => setWrite(true)}
+                        >
+                            <img src="/send.svg" />
+                            Send Note
+                        </button>
+                        {sent && <div className="help">{sent}</div>}
+                    </div>
                     {newNotes.length > 0 ? (
                         <div>
                             <div className="tags">
@@ -110,16 +120,6 @@ export default function Home({ user, users, notes }) {
                     ) : (
                         <div className="help">No new Notes :)</div>
                     )}
-                    <div>
-                        <button
-                            className="button"
-                            onClick={() => setWrite(true)}
-                        >
-                            <img src="/send.svg" />
-                            Send Note
-                        </button>
-                        {sent && <div className="help">{sent}</div>}
-                    </div>
                 </div>
                 <div className="notes-grid">
                     {acceptedNotes.length > 0 ? (
