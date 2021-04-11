@@ -2,7 +2,7 @@ export default function AcceptNote({ close, note, onSubmit }) {
     if (!note) return <div />
 
     function accept() {
-        fetch(`/api/acceptNote/${note.id}`)
+        fetch(`/api/acceptnote/${note.id}`)
             .then((resp) => {
                 if (resp.status === 200) {
                     const newNote = { ...note, accepted: true }
@@ -18,7 +18,7 @@ export default function AcceptNote({ close, note, onSubmit }) {
     }
 
     function deny() {
-        fetch(`/api/deleteNote/${note.id}`)
+        fetch(`/api/deletenote/${note.id}`)
             .then((resp) => {
                 if (resp.status === 200) {
                     onSubmit('Deleted', note)

@@ -12,7 +12,7 @@ export default function WriteNote({ active, user, users, close, onSend }) {
             setError('Please fill out the required fields.')
             return
         }
-        fetch('/api/sendNote', {
+        fetch('/api/sendnote', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',

@@ -1,6 +1,6 @@
 import db from '../../../utils/firestore-backend'
 
-export default function deleteNote(req, res) {
+export default function deletenote(req, res) {
     if (req.method === 'GET') {
         const { noteid } = req.query
         const noteOfInterest = db.collection('notes').doc(noteid)

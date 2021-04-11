@@ -8,7 +8,6 @@ export default function creategroup(req, res) {
             name,
             description,
         }
-        console.log(group)
         const groupOfInterest = db.collection('groups').doc(name)
         // checking existence of group, if already made then dont make
         groupOfInterest

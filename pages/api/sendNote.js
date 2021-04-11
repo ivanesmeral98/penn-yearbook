@@ -1,6 +1,6 @@
 import db from '../../utils/firestore-backend'
 
-export default function sendNote(req, res) {
+export default function sendnote(req, res) {
     if (req.method === 'POST') {
         const {
             fromFirstName,

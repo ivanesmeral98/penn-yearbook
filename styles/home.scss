@@ -174,8 +174,9 @@
         }
         .notes-grid {
             display: flex;
+            overflow-y: scroll;
             flex-wrap: wrap;
-            overflow: scroll;
+            justify-content: space-around;
         }
     }
 }
