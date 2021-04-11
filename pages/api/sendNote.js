@@ -16,7 +16,7 @@ export default function sendnote(req, res) {
             toEmail: toEmail || '',
             toGroup: db.doc(`groups/${toGroup}`) || '',
             message,
-            accepted: false,
+            accepted: !!toGroup,
         }
         db.collection('notes')
             .add(note)

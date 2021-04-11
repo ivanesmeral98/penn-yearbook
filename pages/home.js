@@ -21,7 +21,7 @@ export default function Home({ user, users, notes, groups }) {
     const [acceptedNotes, setAcceptedNotes] = useState(
         notes.filter((n) => n.accepted),
     )
-    const [write, setWrite] = useState(false)
+    const [write, setWrite] = useState()
     const [accept, setAccept] = useState()
     const [sent, setSent] = useState()
     const [acceptError, setAcceptError] = useState()
@@ -156,7 +156,7 @@ export default function Home({ user, users, notes, groups }) {
                     <div>
                         <button
                             className="button"
-                            onClick={() => setWrite(true)}
+                            onClick={() => setWrite('user')}
                         >
                             <img src="/send.svg" />
                             Send Note
@@ -200,7 +200,7 @@ export default function Home({ user, users, notes, groups }) {
                     user={user}
                     users={users}
                     active={write}
-                    close={() => setWrite(false)}
+                    close={() => setWrite()}
                     onSend={onSend}
                 />
                 <AcceptNote
@@ -253,20 +253,30 @@ export default function Home({ user, users, notes, groups }) {
                                 ))}
                             </div>
                         </div>
-                        <div className="group-actions">
-                            <button
-                                className="button"
-                                onClick={() => setAddMember(group)}
-                            >
-                                <img src="/user-plus.svg" />
-                                Add Members
-                            </button>
-                            {addError && <p className="help">{addError}</p>}
-                            <button className="button" onClick={leaveGroup}>
-                                <img src="/user-x.svg" />
-                                Leave Group
-                            </button>
+                        <div>
+                            <div className="group-actions">
+                                <button
+                                    className="button"
+                                    onClick={() => setAddMember(group)}
+                                >
+                                    <img src="/user-plus.svg" />
+                                    Add Members
+                                </button>
+                                <button className="button" onClick={leaveGroup}>
+                                    <img src="/user-x.svg" />
+                                    Leave Group
+                                </button>
+                                <button
+                                    className="button"
+                                    onClick={() => setWrite('group')}
+                                >
+                                    <img src="/send.svg" />
+                                    Post Group Note
+                                </button>
+                            </div>
                             {leaveError && <p className="help">{leaveError}</p>}
+                            {addError && <p className="help">{addError}</p>}
+                            {sent && <p className="help">{sent}</p>}
                         </div>
                     </div>
                 </div>
@@ -280,6 +290,14 @@ export default function Home({ user, users, notes, groups }) {
                     users={users}
                     close={() => setAddMember()}
                     onAdd={onAddMember}
+                />
+                <WriteNote
+                    user={user}
+                    users={users}
+                    group={group}
+                    active={write}
+                    close={() => setWrite()}
+                    onSend={onSend}
                 />
             </div>
         )
