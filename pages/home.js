@@ -35,39 +35,24 @@ export default function Home({ user, users, notes, groups }) {
     const [leaveError, setLeaveError] = useState()
 
     useEffect(() => {
-        // fetch('/api/getgroupnotes', {
-        //     method: 'POST',
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         groupName: group.name
-        //     })
-        // })
-        // .then(resp => {
-        //
-        // })
-
-        setGroupNotes([
-            {
-                fromName: 'Eva Killenberg',
-                message: 'test note short',
-            },
-            {
-                fromName: 'Ivan Esmeral',
-                message:
-                    'text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long ',
-            },
-        ])
+        if (!group) return
+        fetch(`/api/getgroupnotes?groupName=${group.name}`)
+            .then((resp) => (resp.status === 200 ? resp.json() : []))
+            .then((res) => {
+                setGroupNotes(res)
+            })
     }, [group])
 
-    async function onSend(success) {
+    async function onSend(success, note) {
         setSent(
             success
                 ? 'Note sent successfully!'
                 : 'Error sending note, please try again.',
         )
         setTimeout(() => setSent(), 5000)
+        if (group) {
+            setGroupNotes([note, ...groupNotes])
+        }
     }
 
     function onAcceptNote(status, note) {
@@ -308,7 +293,7 @@ export default function Home({ user, users, notes, groups }) {
                         </div>
                     </div>
                     <div className="notes-grid">
-                        {groupNotes.length > 0 ? (
+                        {groupNotes && groupNotes.length > 0 ? (
                             groupNotes.map((n) => <Note key={n.id} note={n} />)
                         ) : (
                             <div className="text">No notes yet!</div>

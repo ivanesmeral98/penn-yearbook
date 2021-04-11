@@ -34,7 +34,10 @@ export default function WriteNote({
             }),
         }).then((resp) => {
             if (resp.status === 200) {
-                onSend(true)
+                onSend(true, {
+                    fromName: `${user.firstName} ${user.lastName}`,
+                    message,
+                })
                 close()
             } else {
                 onSend(false)
