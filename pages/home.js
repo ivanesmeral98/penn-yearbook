@@ -20,7 +20,7 @@ export default function Home({ user, users, notes }) {
     )
     const [write, setWrite] = useState(false)
     const [accept, setAccept] = useState()
-    const [sent, setSent] = useState()
+    const [sent, setSent] = useState('Note sent successfully!')
     const [acceptError, setAcceptError] = useState()
 
     async function onSend(success) {
