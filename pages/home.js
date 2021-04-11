@@ -5,12 +5,14 @@ import StudentModal from '../components/studentModal'
 import WriteNote from '../components/writeNote'
 import AcceptNote from '../components/acceptNote'
 import Note from '../components/note'
+import CreateGroup from '../components/createGroup'
 import { alphaFilters } from '../helpers/constants'
 
 const sections = ['students', 'groups', 'notes']
 
-export default function Home({ user, users, notes }) {
+export default function Home({ user, users, notes, groups }) {
     if (!user) window.location.redirect('/')
+
     const [section, setSection] = useState('students')
     const [filter, setFilter] = useState()
     const [selected, setSelected] = useState()
@@ -22,6 +24,10 @@ export default function Home({ user, users, notes }) {
     const [accept, setAccept] = useState()
     const [sent, setSent] = useState()
     const [acceptError, setAcceptError] = useState()
+    const [allGroups, setAllGroups] = useState(groups)
+    const [group, setGroup] = useState(groups[0] || {})
+    const [create, setCreate] = useState()
+    const [createError, setCreateError] = useState()
 
     async function onSend(success) {
         setSent(
@@ -43,6 +49,15 @@ export default function Home({ user, users, notes }) {
             setTimeout(() => setAcceptError(), 5000)
         }
         setAccept(false)
+    }
+
+    function onCreateGroup(success, newGroup) {
+        if (success) {
+            setAllGroups([newGroup, ...allGroups])
+            setGroup(newGroup)
+        } else {
+            setCreateError('Sorry, something went wrong. Please try again.')
+        }
     }
 
     function renderStudents() {
@@ -146,7 +161,40 @@ export default function Home({ user, users, notes }) {
     }
 
     function renderGroups() {
-        return <div className="text">Coming soon...</div>
+        return (
+            <div className="groups-container">
+                <div className="groups-list">
+                    {allGroups.length > 0 ? (
+                        allGroups.map((g) => (
+                            <div
+                                className={
+                                    group.name === g.name
+                                        ? 'option active'
+                                        : 'option'
+                                }
+                                onClick={() => setGroup(g)}
+                                key={g.name}
+                            >
+                                {g.name}
+                            </div>
+                        ))
+                    ) : (
+                        <p className="help">No groups yet!</p>
+                    )}
+                    <button className="button" onClick={() => setCreate(user)}>
+                        <img src="/users.svg" />
+                        Create Group
+                    </button>
+                    {createError && <p className="help">{createError}</p>}
+                </div>
+                <div className="group-page"></div>
+                <CreateGroup
+                    user={create}
+                    close={() => setCreate()}
+                    onCreate={onCreateGroup}
+                />
+            </div>
+        )
     }
 
     return (
@@ -191,11 +239,17 @@ export const getServerSideProps = withIronSession(
         )
         const notes = resp.status === 200 ? await resp.json() : []
 
+        resp = await fetch(
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/getgroups/${user.email}`,
+        )
+        const groups = resp.status === 200 ? await resp.json() : []
+
         return {
             props: {
                 user,
                 users,
                 notes,
+                groups,
             },
         }
     },

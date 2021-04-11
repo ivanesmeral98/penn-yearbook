@@ -98,9 +98,11 @@ export default function WriteNote({ active, user, users, close, onSend }) {
                     />
                 </div>
                 {error && <div className="text">{error}</div>}
-                <button className="button submit" onClick={send}>
-                    Submit
-                </button>
+                <div className="button-container">
+                    <button className="button submit" onClick={send}>
+                        Submit
+                    </button>
+                </div>
             </div>
         </div>
     )

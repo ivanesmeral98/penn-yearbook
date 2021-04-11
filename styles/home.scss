@@ -158,10 +158,6 @@
             .button {
                 margin: 0;
 
-                img {
-                    margin-right: 10px;
-                }
-
                 @media (max-width: $mobile) {
                     font-size: 14px;
                     margin: 10px 0;
@@ -177,6 +173,25 @@
             overflow-y: scroll;
             flex-wrap: wrap;
             justify-content: space-around;
+        }
+    }
+
+    .groups-container {
+        .groups-list {
+            margin: 2rem 0;
+
+            .option {
+                width: 200px;
+                margin: 0;
+
+                &.active {
+                    background-color: $yb-light-blue;
+                }
+            }
+
+            .button {
+                margin: 20px 0;
+            }
         }
     }
 }

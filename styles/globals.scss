@@ -6,7 +6,6 @@ $mobile: 500px;
 @import './home.scss';
 @import './student.scss';
 @import './studentModal.scss';
-@import './writeNote.scss';
 @import './acceptNote.scss';
 @import './note.scss';
 
@@ -37,6 +36,10 @@ a {
     border-color: black;
     background-color: transparent;
     color: black;
+
+    img {
+        margin-right: 10px;
+    }
 
     &:hover {
         border-color: black;
@@ -129,6 +132,15 @@ a {
         height: 100vh !important;
         width: 100vw !important;
         max-height: 100vh !important;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+
+        .button {
+            margin: 20px 0 0;
+        }
     }
 
     .close {
