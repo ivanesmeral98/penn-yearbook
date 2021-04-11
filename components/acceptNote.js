@@ -18,7 +18,7 @@ export default function AcceptNote({ close, note, onSubmit }) {
     }
 
     function deny() {
-        fetch(`/api/delete/${note.id}`)
+        fetch(`/api/deleteNote/${note.id}`)
             .then((resp) => {
                 if (resp.status === 200) {
                     onSubmit('Deleted', note)
