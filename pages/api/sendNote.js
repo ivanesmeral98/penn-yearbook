@@ -21,18 +21,15 @@ export default function sendnote(req, res) {
         db.collection('notes')
             .add(note)
             .then(() => {
-                res.status(200).send({
-                    note,
-                })
+                res.status(200).send(note)
             })
             .catch((err) => {
                 res.status(403).send({
-                    err: `Error putting user in DB${err}`,
+                    err: `Error putting note in DB ${err}`,
                 })
             })
     } else {
         // Handle any other HTTP method
-        res.status(500)
-        res.end()
+        res.status(404).send()
     }
 }

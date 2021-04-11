@@ -50,7 +50,7 @@ export default function Home({ user, users, notes, groups }) {
                 : 'Error sending note, please try again.',
         )
         setTimeout(() => setSent(), 5000)
-        if (group) {
+        if (note.toGroup) {
             setGroupNotes([note, ...groupNotes])
         }
     }
@@ -58,9 +58,9 @@ export default function Home({ user, users, notes, groups }) {
     function onAcceptNote(status, note) {
         if (status === 'Accepted') {
             setAcceptedNotes([note, ...acceptedNotes])
-            setNewNotes(newNotes.filter((n) => n.id !== note.id))
+            setNewNotes(newNotes.filter((n) => note && n.id !== note.id))
         } else if (status === 'Deleted') {
-            setNewNotes(newNotes.filter((n) => n.id !== note.id))
+            setNewNotes(newNotes.filter((n) => note && n.id !== note.id))
         } else {
             setAcceptError('Sorry, something went wrong. Please try again.')
             setTimeout(() => setAcceptError(), 5000)
@@ -294,7 +294,7 @@ export default function Home({ user, users, notes, groups }) {
                     </div>
                     <div className="notes-grid">
                         {groupNotes && groupNotes.length > 0 ? (
-                            groupNotes.map((n) => <Note key={n.id} note={n} />)
+                            groupNotes.map((n, i) => <Note key={i} note={n} />)
                         ) : (
                             <div className="text">No notes yet!</div>
                         )}

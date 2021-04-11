@@ -19,7 +19,7 @@ export default function WriteNote({
             setError('Please fill out the required fields.')
             return
         }
-        fetch('/api/sendnote', {
+        fetch('/api/sendNote', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -30,20 +30,19 @@ export default function WriteNote({
                 fromEmail: user.email,
                 toEmail,
                 message,
-                toGroup: group.name,
+                toGroup: group ? group.name : '',
             }),
-        }).then((resp) => {
-            if (resp.status === 200) {
-                onSend(true, {
-                    fromName: `${user.firstName} ${user.lastName}`,
-                    message,
-                })
-                close()
-            } else {
-                onSend(false)
-                close()
-            }
         })
+            .then((resp) => (resp.status === 200 ? resp.json() : {}))
+            .then((note) => {
+                if (note) {
+                    onSend(true, note)
+                    close()
+                } else {
+                    onSend(false)
+                    close()
+                }
+            })
     }
 
     return (
