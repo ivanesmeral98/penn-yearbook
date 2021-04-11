@@ -26,8 +26,8 @@ export default function Home({ user, users, notes }) {
     async function onSend(success) {
         setSent(
             success
-                ? 'Message sent successfully!'
-                : 'Error sending message, please try again.',
+                ? 'Note sent successfully!'
+                : 'Error sending note, please try again.',
         )
         setTimeout(() => setSent(), 5000)
     }
@@ -88,10 +88,10 @@ export default function Home({ user, users, notes }) {
                     {newNotes.length > 0 ? (
                         <div>
                             <div className="tags">
-                                {newNotes.slice(0, 3).map((n) => (
+                                {newNotes.slice(0, 3).map((n, i) => (
                                     <div
                                         className="tag"
-                                        key={n.fromEmail}
+                                        key={n.fromEmail + i}
                                         onClick={() => setAccept(n)}
                                     >
                                         New note from {n.fromName}!
