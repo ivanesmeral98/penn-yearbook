@@ -5,16 +5,23 @@ import FileUpload from '../components/fileUpload'
 import { schools, majors, minors } from '../helpers/constants'
 import { login } from '../helpers/auth'
 
-export default function Signup() {
+export default function Signup({ activities }) {
     const [email, setEmail] = useState()
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
+
     const [selectedSchools, setSelectedSchools] = useState([])
     const [schoolSearch, setSchoolSearch] = useState()
+
     const [selectedMajors, setSelectedMajors] = useState([])
     const [majorSearch, setMajorSearch] = useState()
+
     const [selectedMinors, setSelectedMinors] = useState([])
     const [minorSearch, setMinorSearch] = useState()
+
+    const [selectedActivities, setSelectedActivities] = useState([])
+    const [activitySearch, setActivitySearch] = useState()
+
     const [quote, setQuote] = useState()
     const [image, setImage] = useState()
     const [error, setError] = useState()
@@ -310,6 +317,62 @@ export default function Signup() {
                                             ) : null,
                                         )}
                                 </div>
+                                <div className="field">
+                                    <label className="label">Activities</label>
+                                    <input
+                                        className="input"
+                                        type="text"
+                                        placeholder="Search for an activity..."
+                                        onChange={(e) =>
+                                            setActivitySearch(e.target.value)
+                                        }
+                                        value={activitySearch}
+                                    />
+                                    <span
+                                        className="button link"
+                                        onClick={() =>
+                                            setSelectedActivities([])
+                                        }
+                                    >
+                                        Clear
+                                    </span>
+                                    <div className="tags">
+                                        {selectedActivities &&
+                                            selectedActivities.map((a) => (
+                                                <span className="tag" key={a}>
+                                                    {a}
+                                                </span>
+                                            ))}
+                                    </div>
+                                    {activitySearch &&
+                                        activities.map((a) =>
+                                            a
+                                                .toLowerCase()
+                                                .indexOf(
+                                                    activitySearch.toLowerCase(),
+                                                ) !== -1 ? (
+                                                <p
+                                                    key={a}
+                                                    className="option"
+                                                    onClick={() => {
+                                                        setActivitySearch('')
+                                                        if (
+                                                            selectedActivities.includes(
+                                                                a,
+                                                            )
+                                                        )
+                                                            return
+                                                        setSelectedActivities([
+                                                            a,
+                                                            ...selectedActivities,
+                                                        ])
+                                                    }}
+                                                >
+                                                    {a}
+                                                </p>
+                                            ) : null,
+                                        )}
+                                </div>
                             </div>
                         </div>
                         <button className="button submit" onClick={submit}>
@@ -334,8 +397,12 @@ export const getServerSideProps = withIronSession(
             res.end()
         }
 
+        const resp = await fetch(
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/getactivities`,
+        )
+        const activities = resp.status === 200 ? await resp.json() : []
         return {
-            props: {},
+            props: { activities: activities.map((a) => a.name) },
         }
     },
     {

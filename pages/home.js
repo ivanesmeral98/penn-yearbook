@@ -1,5 +1,5 @@
 import { withIronSession } from 'next-iron-session'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Student from '../components/student'
 import StudentModal from '../components/studentModal'
 import WriteNote from '../components/writeNote'
@@ -27,11 +27,39 @@ export default function Home({ user, users, notes, groups }) {
     const [acceptError, setAcceptError] = useState()
     const [allGroups, setAllGroups] = useState(groups)
     const [group, setGroup] = useState(groups[0] || {})
+    const [groupNotes, setGroupNotes] = useState([])
     const [create, setCreate] = useState()
     const [createError, setCreateError] = useState()
     const [addMember, setAddMember] = useState()
     const [addError, setAddError] = useState()
     const [leaveError, setLeaveError] = useState()
+
+    useEffect(() => {
+        // fetch('/api/getgroupnotes', {
+        //     method: 'POST',
+        //     headers: {
+        //         'content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         groupName: group.name
+        //     })
+        // })
+        // .then(resp => {
+        //
+        // })
+
+        setGroupNotes([
+            {
+                fromName: 'Eva Killenberg',
+                message: 'test note short',
+            },
+            {
+                fromName: 'Ivan Esmeral',
+                message:
+                    'text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long text note long ',
+            },
+        ])
+    }, [group])
 
     async function onSend(success) {
         setSent(
@@ -278,6 +306,13 @@ export default function Home({ user, users, notes, groups }) {
                             {addError && <p className="help">{addError}</p>}
                             {sent && <p className="help">{sent}</p>}
                         </div>
+                    </div>
+                    <div className="notes-grid">
+                        {groupNotes.length > 0 ? (
+                            groupNotes.map((n) => <Note key={n.id} note={n} />)
+                        ) : (
+                            <div className="text">No notes yet!</div>
+                        )}
                     </div>
                 </div>
                 <CreateGroup

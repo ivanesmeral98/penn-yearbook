@@ -168,12 +168,13 @@
                 text-align: left;
             }
         }
-        .notes-grid {
-            display: flex;
-            overflow-y: scroll;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+    }
+
+    .notes-grid {
+        display: flex;
+        overflow-y: scroll;
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
 
     .groups-container {
